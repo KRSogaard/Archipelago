@@ -1,0 +1,2 @@
+include ':Kauai.Core'
+project(':Kauai.Core').projectDir = new File('../Kauai.Core')
