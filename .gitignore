@@ -5,6 +5,11 @@
 gradle/
 .idea/
 .vscode/*
+.classpath
+.project
+.settings/
+bin/
+
 !**/src/build*
 !**/tst/build*
 

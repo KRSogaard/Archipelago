@@ -1,0 +1,107 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.1.RELEASE'
+    }
+
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    configurations.all {
+        // check for updates every build (if we are using snapshot with the same version)
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    sourceCompatibility = 1.8
+
+    dependencies {
+        // Test framework
+        testImplementation group: 'junit', name: 'junit', version: '4.12'
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
+
+        // Google Guava
+        implementation 'com.google.guava:guava:28.0-jre'
+
+        // Lombok
+        compile 'org.projectlombok:lombok:1.+'  // utilities for POJOs
+        annotationProcessor 'org.projectlombok:lombok:1.+'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.+'
+    }
+
+    sourceSets {
+        main.java.srcDirs = ['src']
+        main.resources.srcDirs = ['resources']
+        test.java.srcDirs = ['tst']
+    }
+}
+
+project(':Kauai') {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'application'
+
+    mainClassName = 'build.archipelago.kauai.Application'
+
+    dependencies {
+        implementation project(':Kauai.Core')
+        implementation 'org.springframework.boot:spring-boot-starter-jersey'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    task runlocal {
+        run.configure {
+            project.logger.lifecycle("======================================")
+            project.logger.lifecycle("= Running application in alpha stage =")
+            project.logger.lifecycle("======================================")
+            systemProperty "spring.profiles.active", 'alpha'
+        }
+    }
+    runlocal.finalizedBy run
+}
+
+project(':Oahu') {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'application'
+
+    mainClassName = 'build.archipelago.kauai.Application'
+
+    dependencies {
+        implementation project(':Oahu.Core')
+        implementation 'org.springframework.boot:spring-boot-starter-jersey'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    task runlocal {
+        run.configure {
+            project.logger.lifecycle("======================================")
+            project.logger.lifecycle("= Running application in alpha stage =")
+            project.logger.lifecycle("======================================")
+            systemProperty "spring.profiles.active", 'alpha'
+        }
+    }
+    runlocal.finalizedBy run
+}
