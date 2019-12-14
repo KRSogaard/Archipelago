@@ -3,4 +3,5 @@ include 'Kauai'
 include 'Oahu'
 include 'Oahu.Core'
 include 'Kauai.Core'
+include 'Archipelago.Common'
 

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class PackagesControlerTest {
+public class PackagesControllerTest {
 
     @Test
     public void emptyTest() {

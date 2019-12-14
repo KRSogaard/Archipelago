@@ -34,6 +34,8 @@ subprojects {
         testImplementation group: 'junit', name: 'junit', version: '4.12'
         testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
 
+        compile 'org.slf4j:slf4j-api:1.7.25'
+
         // Google Guava
         implementation 'com.google.guava:guava:28.0-jre'
 
@@ -59,8 +61,13 @@ project(':Kauai') {
 
     dependencies {
         implementation project(':Kauai.Core')
+        implementation project(':Archipelago.Common')
+
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
         implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        implementation 'com.amazonaws:aws-java-sdk-s3:1.11.692'
+        implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
 
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -76,6 +83,14 @@ project(':Kauai') {
         }
     }
     runlocal.finalizedBy run
+}
+project(':Kauai.Core') {
+    dependencies {
+        implementation project(':Archipelago.Common')
+
+        implementation 'com.amazonaws:aws-java-sdk-s3:1.11.692'
+        implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
+    }
 }
 
 project(':Oahu') {
