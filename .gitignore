@@ -1,7 +1,7 @@
-#.gradle
-#**gradlew*
+.gradle
 /build/
 **/build/
+**gradlew*
 gradle/
 .idea/
 .vscode/*
