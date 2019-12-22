@@ -10,7 +10,15 @@ public class PackageNameVersion {
     private String name;
     private String version;
 
-    public String getNameVersion() {
+    public static PackageNameVersion parse(String nameAndVersion) throws NullPointerException {
+        String[] nV = nameAndVersion.split("-", 1);
+        if (nV.length != 2) {
+            throw new IllegalArgumentException("\"" + nameAndVersion + "\" is not a valid name version");
+        }
+        return new PackageNameVersion(nV[0], nV[1]);
+    }
+
+    public String getConcatenated() {
         return name + "-" + version;
     }
 

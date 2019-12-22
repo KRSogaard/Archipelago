@@ -1,5 +1,6 @@
 package build.archipelago.kauai.configuration;
 
+import build.archipelago.kauai.core.data.DynamoDBPackageConfig;
 import build.archipelago.kauai.core.data.DynamoDBPackageData;
 import build.archipelago.kauai.core.data.PackageData;
 import build.archipelago.kauai.core.storage.PackageStorage;
@@ -30,10 +31,18 @@ public class ServiceConfiguration {
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public PackageData packageData(
             @Value("${dynamodb.packages.name}") String packageTable,
+            @Value("${dynamodb.packages_builds.name}") String packageBuildsTable,
             @Value("${dynamodb.packages_latest.name}") String packageLatestTable,
             AmazonDynamoDB dynamoDB) {
-        log.info("Creating DynamoDBPackageData with package table \"{}\" and latest table \"{}\"",
-                packageTable, packageLatestTable);
-        return new DynamoDBPackageData(dynamoDB, packageTable, packageLatestTable);
+
+        DynamoDBPackageConfig config = DynamoDBPackageConfig.builder()
+                                            .packagesTableName(packageTable)
+                                            .packagesBuildsTableName(packageBuildsTable)
+                                            .packagesLatestTableName(packageLatestTable)
+                                            .build();
+
+        log.info("Creating DynamoDBPackageData with config \"{}\"",
+                config.toString());
+        return new DynamoDBPackageData(dynamoDB, config);
     }
 }

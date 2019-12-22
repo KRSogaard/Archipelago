@@ -26,6 +26,8 @@ s3:
 dynamodb:
   packages_latest:
     name: "packages.latest.alpha"
+  packages_builds:
+    name: "packages.builds.alpha"
   packages:
     name: "packages.alpha"
 
