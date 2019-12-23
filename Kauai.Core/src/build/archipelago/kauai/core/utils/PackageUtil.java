@@ -1,4 +1,4 @@
-package utils;
+package build.archipelago.kauai.core.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

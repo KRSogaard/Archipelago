@@ -2,6 +2,10 @@ package build.archipelago.kauai.core.delegates.createPackage;
 
 import build.archipelago.kauai.core.data.PackageData;
 import build.archipelago.kauai.core.data.models.CreatePackageModel;
+import build.archipelago.kauai.core.data.models.PackageDataModel;
+import build.archipelago.kauai.core.exceptions.PackageExistsException;
+
+import java.util.Optional;
 
 public class CreatePackageDelegate {
 
@@ -11,8 +15,13 @@ public class CreatePackageDelegate {
         this.packageData = packageData;
     }
 
-    public void create(CreatePackageDelegateRequest request) {
+    public void create(CreatePackageDelegateRequest request) throws PackageExistsException {
         request.validate();
+
+        Optional<PackageDataModel> packageSearch = packageData.getPackage(request.getName());
+        if (packageSearch.isPresent()) {
+            throw new PackageExistsException(request.getName());
+        }
 
         packageData.createPackage(CreatePackageModel.builder()
                 .name(request.getName())

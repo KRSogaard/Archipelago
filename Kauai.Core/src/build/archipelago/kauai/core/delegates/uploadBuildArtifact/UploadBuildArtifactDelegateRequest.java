@@ -4,7 +4,7 @@ import build.archipelago.common.PackageNameVersion;
 import com.google.common.base.Preconditions;
 import lombok.Builder;
 import lombok.Data;
-import utils.Constants;
+import build.archipelago.kauai.core.utils.Constants;
 
 @Builder
 @Data

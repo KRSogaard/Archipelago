@@ -2,6 +2,7 @@ package build.archipelago.kauai;
 
 import build.archipelago.kauai.core.exceptions.PackageArtifactExistsException;
 import build.archipelago.kauai.core.exceptions.PackageArtifactNotFoundException;
+import build.archipelago.kauai.core.exceptions.PackageExistsException;
 import build.archipelago.kauai.core.exceptions.PackageNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,7 +34,8 @@ public class CustomGlobalExceptionHandler {
         response.sendError(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 
-
-
-
+    @ExceptionHandler(PackageExistsException.class)
+    public void springHandlePackageExistsException(Exception ex, HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.CONFLICT.value(), ex.getMessage());
+    }
 }

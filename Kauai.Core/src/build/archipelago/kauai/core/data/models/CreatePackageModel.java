@@ -3,7 +3,7 @@ package build.archipelago.kauai.core.data.models;
 import com.google.common.base.Preconditions;
 import lombok.Builder;
 import lombok.Data;
-import utils.PackageUtil;
+import build.archipelago.kauai.core.utils.PackageUtil;
 
 @Data
 @Builder

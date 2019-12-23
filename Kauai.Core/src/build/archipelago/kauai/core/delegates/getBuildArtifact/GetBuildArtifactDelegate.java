@@ -8,7 +8,7 @@ import build.archipelago.kauai.core.exceptions.PackageNotFoundException;
 import build.archipelago.kauai.core.storage.PackageStorage;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
-import utils.Constants;
+import build.archipelago.kauai.core.utils.Constants;
 
 import java.io.IOException;
 import java.util.Optional;

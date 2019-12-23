@@ -10,7 +10,7 @@ import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import lombok.extern.slf4j.Slf4j;
-import utils.Constants;
+import build.archipelago.kauai.core.utils.Constants;
 
 import java.time.Instant;
 import java.util.HashMap;
