@@ -1,0 +1,1 @@
+Maui workspace create --name "[WS NAME]" --package Package1 --package Package2 --versionset VersionsetName
