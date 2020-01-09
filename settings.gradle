@@ -1,7 +1,8 @@
 include 'Maui'
+include 'Maui.Core'
 include 'Kauai'
+include 'Kauai.Core'
 include 'Oahu'
 include 'Oahu.Core'
-include 'Kauai.Core'
 include 'Archipelago.Common'
 

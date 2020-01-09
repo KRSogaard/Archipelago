@@ -138,3 +138,10 @@ project(':Maui') {
         options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
     }
 }
+project(':Maui.Core') {
+    dependencies {
+        implementation project(':Archipelago.Common')
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
+    }
+}
