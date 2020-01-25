@@ -52,7 +52,7 @@ subprojects {
     }
 }
 
-project(':Kauai') {
+project(':PackageService') {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'application'
@@ -60,7 +60,7 @@ project(':Kauai') {
     mainClassName = 'build.archipelago.kauai.Application'
 
     dependencies {
-        implementation project(':Kauai.Core')
+        implementation project(':PackageService.Core')
         implementation project(':Archipelago.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
@@ -84,7 +84,7 @@ project(':Kauai') {
     }
     runlocal.finalizedBy run
 }
-project(':Kauai.Core') {
+project(':PackageService.Core') {
     dependencies {
         implementation project(':Archipelago.Common')
 
