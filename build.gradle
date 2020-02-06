@@ -98,7 +98,7 @@ project(':PackageService.Core') {
     }
 }
 
-project(':Oahu') {
+project(':VersionSetService') {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'application'
@@ -106,7 +106,7 @@ project(':Oahu') {
     mainClassName = 'build.archipelago.kauai.Application'
 
     dependencies {
-        implementation project(':Oahu.Core')
+        implementation project(':VersionSetService.Core')
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
         implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -124,6 +124,11 @@ project(':Oahu') {
         }
     }
     runlocal.finalizedBy run
+}
+project(':VersionSetService.Core') {
+    dependencies {
+        implementation project(':Archipelago.Common')
+    }
 }
 
 project(':Maui') {

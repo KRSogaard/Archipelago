@@ -1,6 +1,4 @@
-package build.archipelago.oahu;
-
-import static org.junit.jupiter.api.Assertions.*;
+package build.archipelago.versionsetservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

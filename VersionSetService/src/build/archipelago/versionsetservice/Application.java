@@ -1,4 +1,4 @@
-package build.archipelago.oahu;
+package build.archipelago.versionsetservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
