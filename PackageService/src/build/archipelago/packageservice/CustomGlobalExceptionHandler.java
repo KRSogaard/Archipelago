@@ -19,11 +19,6 @@ public class CustomGlobalExceptionHandler {
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(PackageArtifactNotFoundException.class)
-    public void springHandlePackageArtifactNotFound(Exception ex, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
-    }
-
     @ExceptionHandler(PackageNotFoundException.class)
     public void springHandlePackageNotFoundException(Exception ex, HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());

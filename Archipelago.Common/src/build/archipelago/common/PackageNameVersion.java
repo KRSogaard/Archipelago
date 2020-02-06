@@ -11,7 +11,7 @@ public class PackageNameVersion {
     private String version;
 
     public static PackageNameVersion parse(String nameAndVersion) throws NullPointerException {
-        String[] nV = nameAndVersion.split("-", 1);
+        String[] nV = nameAndVersion.split("-", 2);
         if (nV.length != 2) {
             throw new IllegalArgumentException("\"" + nameAndVersion + "\" is not a valid name version");
         }

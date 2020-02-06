@@ -25,8 +25,8 @@ public class GetBuildArtifactDelegate {
         this.packageStorage = packageStorage;
     }
 
-    public GetBuildArtifactResponse getBuildArtifact(PackageNameVersion nameVersion, Optional<String> hash)
-            throws PackageNotFoundException, IOException, PackageArtifactNotFoundException {
+    public Optional<GetBuildArtifactResponse> getBuildArtifact(PackageNameVersion nameVersion, Optional<String> hash)
+            throws IOException {
         Preconditions.checkNotNull(nameVersion, "Name required");
         nameVersion.validate();
         Preconditions.checkNotNull(hash, "A hash is required");
@@ -35,13 +35,15 @@ public class GetBuildArtifactDelegate {
         if (!hash.isPresent() || Constants.LATEST.equalsIgnoreCase(hash.get())) {
             latestHash = packageData.getLatestHash(nameVersion);
             if (!latestHash.isPresent()) {
-                throw new PackageNotFoundException(nameVersion);
+                log.info("Was not able to find latest hash for package {}", nameVersion.getConcatenated());
+                return Optional.empty();
             }
         }
         final String packageHash = latestHash.orElse(hash.get()).toLowerCase();
 
         if (!packageData.buildExists(nameVersion, packageHash)) {
-            throw new PackageArtifactNotFoundException(nameVersion, packageHash);
+            log.info("Was unable to find package \"{}\" hash \"{}\"", nameVersion.getConcatenated(), packageHash);
+            return Optional.empty();
         }
 
         Optional<PackageDataModel> pkg = packageData.getPackage(nameVersion.getName());
@@ -49,10 +51,10 @@ public class GetBuildArtifactDelegate {
             log.error("Was unable to find the package");
         }
 
-        return GetBuildArtifactResponse.builder()
+        return Optional.of(GetBuildArtifactResponse.builder()
                 .byteArray(packageStorage.get(nameVersion, packageHash))
                 .nameVersion(new PackageNameVersion(pkg.get().getName(), nameVersion.getVersion()))
                 .hash(packageHash)
-                .build();
+                .build());
     }
 }

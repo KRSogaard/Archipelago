@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class HealthController {
 
-    @GetMapping(value = {"/health-check"})
+    protected static final String HEALTHY_REPLY = "Healthy";
+    protected static final String HEALTH_PATH = "/health-check";
+
+    @GetMapping(value = {HEALTH_PATH})
     @ResponseStatus(HttpStatus.OK)
     public String doHealthCheck() {
-        return "Healthy";
+        return HEALTHY_REPLY;
     }
 }

@@ -10,5 +10,5 @@ import java.time.Instant;
 public class GetPackageResponse {
     private String name;
     private String description;
-    private Instant create;
+    private long created;
 }

@@ -19,9 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("artifacts")
+@RequestMapping("artifact")
 @Slf4j
 public class ArtifactController {
 
@@ -69,24 +69,28 @@ public class ArtifactController {
     @GetMapping(value = {"{nameVersion}/{hash}", "{nameVersion}"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> getBuildArtifact(
-            @RequestParam("nameVersion") String nameAndVersion,
-            @RequestParam("hash") Optional<String> hash) throws PackageNotFoundException, PackageArtifactNotFoundException {
+            @PathVariable("nameVersion") String nameAndVersion,
+            @PathVariable("hash") Optional<String> hash) throws PackageNotFoundException {
         PackageNameVersion nameVersion = PackageNameVersion.parse(nameAndVersion);
         nameVersion.validate();
 
-        GetBuildArtifactResponse response = null;
+        Optional<GetBuildArtifactResponse> response = null;
         try {
             response = getBuildArtifactDelegate.getBuildArtifact(nameVersion, hash);
         } catch (IOException e) {
             log.error("Unable to read build artifact. " + e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+        if (!response.isPresent()) {
+            throw new PackageNotFoundException(nameVersion, hash);
+        }
 
-        String zipFileName = String.format("%s-%s.zip", response.getNameVersion().getConcatenated(), response.getHash());
+        String zipFileName = String.format("%s-%s.zip", response.get().getNameVersion().getConcatenated(),
+                response.get().getHash());
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/zip"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"")
-                .body(new ByteArrayResource(response.getByteArray()));
+                .body(new ByteArrayResource(response.get().getByteArray()));
     }
 }
