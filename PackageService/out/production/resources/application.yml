@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+logging:
+  level:
+    org.springframework.cloud: 'DEBUG'
+    com.hulu: 'ERROR'
+    com.hulu.mdp: 'INFO'
+    com.hulu.mdp.kaper.test: 'DEBUG'
+  pattern:
+    console: '%d{HH:mm:ss.SSS}[%-5level][%X{RequestId}][%c{1}]: %msg%n'
+    file: "%d %p %c{1.} [%t] %m%n"
+  file: 'build/logs/app-%d{yyyy-MM-dd-HH}.log'
+
+spring:
+  jackson:
+    mapper:
+      accept_case_insensitive_properties: true
+
+s3:
+  packages:
+    name: "alpha-archipelago-packages"
+
+dynamodb:
+  packages_latest:
+    name: "packages.latest.alpha"
+  packages_builds:
+    name: "packages.builds.alpha"
+  packages:
+    name: "packages.alpha"
+
+aws:
+  region: "us-west-2"
+  access:
+    id: "AKIARDAF5R4OERLSQXOW"
+    key: "uGN1m4pb+cjoXdVLzn9mVL5VLLdlNeXvuyZVVGHY"

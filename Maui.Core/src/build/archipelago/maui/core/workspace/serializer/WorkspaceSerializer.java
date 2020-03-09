@@ -1,6 +1,6 @@
 package build.archipelago.maui.core.workspace.serializer;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.maui.core.workspace.Workspace;
 import build.archipelago.maui.core.workspace.WorkspaceConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,7 @@ class WorkspaceSerializer {
 
     private static WorkspaceSerializer convert(Workspace ws) {
         List<String> localPackages = new ArrayList<String>();
-        for (PackageNameVersion nameVersion : ws.getLocalPackages()) {
+        for (ArchipelagoPackage nameVersion : ws.getLocalPackages()) {
             localPackages.add(String.format("%s-%s", nameVersion.getName(), nameVersion.getVersion()));
         }
 
@@ -39,7 +39,7 @@ class WorkspaceSerializer {
     }
 
     private static Workspace convert(WorkspaceSerializer wss) {
-        List<PackageNameVersion> localPackages = new ArrayList<PackageNameVersion>();
+        List<ArchipelagoPackage> localPackages = new ArrayList<ArchipelagoPackage>();
         for (String packageString : wss.getLocalPackages()) {
             int p = packageString.lastIndexOf("-");
             if (p == -1) {
@@ -48,7 +48,7 @@ class WorkspaceSerializer {
             }
             String packageName = packageString.substring(0, p - 1);
             String packageVersion = packageString.substring(p + 1);
-            localPackages.add(new PackageNameVersion(packageName, packageVersion));
+            localPackages.add(new ArchipelagoPackage(packageName, packageVersion));
         }
 
         return Workspace.builder()

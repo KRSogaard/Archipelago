@@ -1,10 +1,8 @@
 package build.archipelago.packageservice.core.delegates.getBuildArtifact;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.data.models.PackageDataModel;
-import build.archipelago.packageservice.core.exceptions.PackageArtifactNotFoundException;
-import build.archipelago.packageservice.core.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.storage.PackageStorage;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,7 @@ public class GetBuildArtifactDelegate {
         this.packageStorage = packageStorage;
     }
 
-    public Optional<GetBuildArtifactResponse> getBuildArtifact(PackageNameVersion nameVersion, Optional<String> hash)
+    public Optional<GetBuildArtifactResponse> getBuildArtifact(ArchipelagoPackage nameVersion, Optional<String> hash)
             throws IOException {
         Preconditions.checkNotNull(nameVersion, "Name required");
         nameVersion.validate();
@@ -53,7 +51,7 @@ public class GetBuildArtifactDelegate {
 
         return Optional.of(GetBuildArtifactResponse.builder()
                 .byteArray(packageStorage.get(nameVersion, packageHash))
-                .nameVersion(new PackageNameVersion(pkg.get().getName(), nameVersion.getVersion()))
+                .nameVersion(new ArchipelagoPackage(pkg.get().getName(), nameVersion.getVersion()))
                 .hash(packageHash)
                 .build());
     }

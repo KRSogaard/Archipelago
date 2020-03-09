@@ -1,17 +1,15 @@
 package build.archipelago.packageservice.controllers;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactResponse;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegate;
-import build.archipelago.packageservice.core.exceptions.PackageArtifactExistsException;
-import build.archipelago.packageservice.core.exceptions.PackageNotFoundException;
-import build.archipelago.packageservice.models.GetPackageResponse;
+import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.models.UploadPackageRequest;
 import build.archipelago.packageservice.utils.TestUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -71,7 +68,7 @@ public class ArtifactControllerTest {
         String hash = UUID.randomUUID().toString();
         String version = "1.0";
 
-        doThrow(new PackageNotFoundException(new PackageNameVersion(packageName, version)))
+        doThrow(new PackageNotFoundException(new ArchipelagoPackage(packageName, version)))
                 .when(uploadBuildArtifactDelegate).uploadArtifact(any());
 
         this.mockMvc.perform(createUploadRequest(UploadPackageRequest.builder()
@@ -110,7 +107,7 @@ public class ArtifactControllerTest {
         String packageName = "PackageA";
         String hash = UUID.randomUUID().toString();
         String version = "1.0";
-        PackageNameVersion nameVersion = new PackageNameVersion(packageName, version);
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(packageName, version);
         byte[] byteArray = TestUtils.readBinaryResourceFile("artifact.zip");
 
         GetBuildArtifactResponse response = GetBuildArtifactResponse.builder()
@@ -136,7 +133,7 @@ public class ArtifactControllerTest {
         String packageName = "PackageA";
         String hash = UUID.randomUUID().toString();
         String version = "1.0";
-        PackageNameVersion nameVersion = new PackageNameVersion(packageName, version);
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(packageName, version);
         byte[] byteArray = TestUtils.readBinaryResourceFile("artifact.zip");
 
         GetBuildArtifactResponse response = GetBuildArtifactResponse.builder()
@@ -161,7 +158,7 @@ public class ArtifactControllerTest {
     public void testGetPackageNotExistsWithoutHash() throws Exception {
         String packageName = "PackageA";
         String version = "1.0";
-        PackageNameVersion nameVersion = new PackageNameVersion(packageName, version);
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(packageName, version);
 
         when(getBuildArtifactDelegate.getBuildArtifact(
                 argThat(argument -> packageName.equalsIgnoreCase(argument.getName()) &&
@@ -179,7 +176,7 @@ public class ArtifactControllerTest {
     public void testGetPackageThatExistsWithAHashThatDoseNot() throws Exception {
         String packageName = "PackageA";
         String version = "1.0";
-        PackageNameVersion nameVersion = new PackageNameVersion(packageName, version);
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(packageName, version);
 
         when(getBuildArtifactDelegate.getBuildArtifact(
                 argThat(argument -> packageName.equalsIgnoreCase(argument.getName()) &&
@@ -198,7 +195,7 @@ public class ArtifactControllerTest {
         String packageName = "PackageA";
         String hash = UUID.randomUUID().toString();
         String version = "1.0";
-        PackageNameVersion nameVersion = new PackageNameVersion(packageName, version);
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(packageName, version);
 
         when(getBuildArtifactDelegate.getBuildArtifact(
                 argThat(argument -> packageName.equalsIgnoreCase(argument.getName()) &&

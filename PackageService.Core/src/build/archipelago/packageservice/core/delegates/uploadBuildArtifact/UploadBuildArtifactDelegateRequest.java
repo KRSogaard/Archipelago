@@ -1,6 +1,6 @@
 package build.archipelago.packageservice.core.delegates.uploadBuildArtifact;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import com.google.common.base.Preconditions;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +9,7 @@ import build.archipelago.packageservice.core.utils.Constants;
 @Builder
 @Data
 public class UploadBuildArtifactDelegateRequest {
-    private PackageNameVersion nameVersion;
+    private ArchipelagoPackage nameVersion;
     private String hash;
     private String config;
     private byte[] buildArtifact;

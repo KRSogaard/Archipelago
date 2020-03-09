@@ -1,9 +1,9 @@
-package build.archipelago.packageservice.core.exceptions;
+package build.archipelago.packageservice.common.exceptions;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 
 public class PackageArtifactNotFoundException extends Exception {
-    public PackageArtifactNotFoundException(PackageNameVersion nameVersion, String hash) {
+    public PackageArtifactNotFoundException(ArchipelagoPackage nameVersion, String hash) {
         super("Artifact \"" +
                 nameVersion.getConcatenated() + "\" with hash [" +
                 hash + "] was not found");

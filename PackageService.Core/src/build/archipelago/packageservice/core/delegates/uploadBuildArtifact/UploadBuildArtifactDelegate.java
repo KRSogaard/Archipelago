@@ -1,11 +1,11 @@
 package build.archipelago.packageservice.core.delegates.uploadBuildArtifact;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.data.models.PackageBuiltDataModel;
 import build.archipelago.packageservice.core.data.models.PackageDataModel;
-import build.archipelago.packageservice.core.exceptions.PackageArtifactExistsException;
-import build.archipelago.packageservice.core.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.storage.PackageStorage;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class UploadBuildArtifactDelegate {
         if (!pkg.isPresent()) {
             throw new PackageNotFoundException(request.getNameVersion().getName());
         }
-        PackageNameVersion nameVersion = new PackageNameVersion(
+        ArchipelagoPackage nameVersion = new ArchipelagoPackage(
                 pkg.get().getName(), request.getNameVersion().getVersion());
 
         String hash = request.getHash();

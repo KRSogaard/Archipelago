@@ -5,8 +5,8 @@ import build.archipelago.packageservice.core.delegates.createPackage.CreatePacka
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegate;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateRequest;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateResponse;
-import build.archipelago.packageservice.core.exceptions.PackageExistsException;
-import build.archipelago.packageservice.core.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.common.exceptions.PackageExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.models.CreatePackageRequest;
 import build.archipelago.packageservice.models.GetPackageResponse;
 import com.google.common.base.Preconditions;

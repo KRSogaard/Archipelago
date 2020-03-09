@@ -1,13 +1,12 @@
 package build.archipelago.packageservice.controllers;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactResponse;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegateRequest;
-import build.archipelago.packageservice.core.exceptions.PackageArtifactExistsException;
-import build.archipelago.packageservice.core.exceptions.PackageArtifactNotFoundException;
-import build.archipelago.packageservice.core.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.models.UploadPackageRequest;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +53,7 @@ public class ArtifactController {
         try {
             uploadBuildArtifactDelegate.uploadArtifact(
                     UploadBuildArtifactDelegateRequest.builder()
-                            .nameVersion(new PackageNameVersion(request.getName(), request.getVersion()))
+                            .nameVersion(new ArchipelagoPackage(request.getName(), request.getVersion()))
                             .hash(request.getHash())
                             .config(request.getConfig())
                             .buildArtifact(request.getBuildArtifact().getBytes())
@@ -71,7 +70,7 @@ public class ArtifactController {
     public ResponseEntity<Resource> getBuildArtifact(
             @PathVariable("nameVersion") String nameAndVersion,
             @PathVariable("hash") Optional<String> hash) throws PackageNotFoundException {
-        PackageNameVersion nameVersion = PackageNameVersion.parse(nameAndVersion);
+        ArchipelagoPackage nameVersion = ArchipelagoPackage.parse(nameAndVersion);
         nameVersion.validate();
 
         Optional<GetBuildArtifactResponse> response = null;

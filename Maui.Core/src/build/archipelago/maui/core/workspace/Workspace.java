@@ -1,6 +1,6 @@
 package build.archipelago.maui.core.workspace;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.maui.core.workspace.serializer.WorkspaceSerializer;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 public class Workspace {
     private String versionSet;
-    private List<PackageNameVersion> localPackages;
+    private List<ArchipelagoPackage> localPackages;
 
     protected void save(Path workspaceRoot) throws IOException {
         WorkspaceSerializer.save(this, workspaceRoot);

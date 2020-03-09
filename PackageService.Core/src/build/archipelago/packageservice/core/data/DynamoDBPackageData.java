@@ -1,6 +1,6 @@
 package build.archipelago.packageservice.core.data;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.data.models.CreatePackageModel;
 import build.archipelago.packageservice.core.data.models.PackageBuiltDataModel;
 import build.archipelago.packageservice.core.data.models.PackageDataModel;
@@ -30,12 +30,12 @@ public class DynamoDBPackageData implements PackageData {
     }
 
     @Override
-    public boolean buildExists(PackageNameVersion nameVersion, String hash) {
+    public boolean buildExists(ArchipelagoPackage nameVersion, String hash) {
         return getBuild(nameVersion, hash).isPresent();
     }
 
     @Override
-    public boolean buildExists(PackageNameVersion nameVersion) {
+    public boolean buildExists(ArchipelagoPackage nameVersion) {
         return getBuild(nameVersion).isPresent();
     }
 
@@ -45,7 +45,7 @@ public class DynamoDBPackageData implements PackageData {
     }
 
     @Override
-    public Optional<PackageBuiltDataModel> getBuild(final PackageNameVersion nameVersion, String hash) {
+    public Optional<PackageBuiltDataModel> getBuild(final ArchipelagoPackage nameVersion, String hash) {
         String latestHash = null;
         if (Constants.LATEST.equalsIgnoreCase(hash)) {
             Optional<String> newHash = getLatestHash(nameVersion);
@@ -72,7 +72,7 @@ public class DynamoDBPackageData implements PackageData {
     }
 
     @Override
-    public Optional<PackageBuiltDataModel> getBuild(PackageNameVersion nameVersion) {
+    public Optional<PackageBuiltDataModel> getBuild(ArchipelagoPackage nameVersion) {
         return getBuild(nameVersion, Constants.LATEST);
     }
 
@@ -93,7 +93,7 @@ public class DynamoDBPackageData implements PackageData {
     }
 
     @Override
-    public void createBuild(PackageNameVersion nameVersion, String hash, String config) {
+    public void createBuild(ArchipelagoPackage nameVersion, String hash, String config) {
         dynamoDB.putItem(new PutItemRequest(settings.getPackagesBuildsTableName(),
                 new HashMap<String, AttributeValue>() {{
                     put(DynamoDBKeys.NAME, new AttributeValue(searchNameVersion(nameVersion)));
@@ -122,7 +122,7 @@ public class DynamoDBPackageData implements PackageData {
                 }}));
     }
 
-    public Optional<String> getLatestHash(PackageNameVersion nameVersion) {
+    public Optional<String> getLatestHash(ArchipelagoPackage nameVersion) {
         GetItemResult result = dynamoDB.getItem(new GetItemRequest(settings.getPackagesLatestTableName(),
                 new HashMap<String, AttributeValue>() {{
                     put(DynamoDBKeys.NAME, new AttributeValue(nameVersion.getConcatenated()));
@@ -143,7 +143,7 @@ public class DynamoDBPackageData implements PackageData {
         );
     }
 
-    private static String searchNameVersion(PackageNameVersion nameVersion) {
+    private static String searchNameVersion(ArchipelagoPackage nameVersion) {
         return searchName(nameVersion.getName()) + "-" + searchVersion(nameVersion.getVersion());
     }
     private static String searchName(String name) {

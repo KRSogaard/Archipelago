@@ -1,10 +1,10 @@
 package build.archipelago.packageservice.core.storage;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 
 import java.io.IOException;
 
 public interface PackageStorage {
-    void upload(PackageNameVersion nameVersion, String hash, byte[] artifactBytes);
-    byte[] get(PackageNameVersion nameVersion, String packageHash) throws IOException;
+    void upload(ArchipelagoPackage nameVersion, String hash, byte[] artifactBytes);
+    byte[] get(ArchipelagoPackage nameVersion, String packageHash) throws IOException;
 }

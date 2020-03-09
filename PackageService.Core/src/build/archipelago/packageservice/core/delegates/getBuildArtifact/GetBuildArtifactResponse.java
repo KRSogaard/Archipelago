@@ -1,6 +1,6 @@
 package build.archipelago.packageservice.core.delegates.getBuildArtifact;
 
-import build.archipelago.common.PackageNameVersion;
+import build.archipelago.common.ArchipelagoPackage;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class GetBuildArtifactResponse {
     private byte[] byteArray;
-    private PackageNameVersion nameVersion;
+    private ArchipelagoPackage nameVersion;
     private String hash;
 }

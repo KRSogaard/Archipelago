@@ -1,4 +1,4 @@
-package build.archipelago.packageservice.core.exceptions;
+package build.archipelago.packageservice.common.exceptions;
 
 public class PackageExistsException extends Exception {
     public PackageExistsException(String name) {

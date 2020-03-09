@@ -1,0 +1,13 @@
+logging:
+  level:
+    org.springframework: 'ERROR'
+    build.archipelago.maui: 'INFO'
+  pattern:
+    console: '%d{HH:mm:ss.SSS}[%-5level][%X{RequestId}][%c{1}]: %msg%n'
+    file: "%d %p %c{1.} [%t] %m%n"
+  file: 'build/logs/app-%d{yyyy-MM-dd-HH}.log'
+
+spring:
+  jackson:
+    mapper:
+      accept_case_insensitive_properties: true
