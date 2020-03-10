@@ -56,7 +56,7 @@ public class CreateVersionSetRevisionDelegateTest {
     @Test
     public void testCreateValidRevision() throws VersionSetDoseNotExistsException, MissingTargetPackageException,
             PackageNotFoundException {
-        String vsName = "TestVS\\master";
+        String vsName = "TestVS-master";
         String revisionId = "12345";
         List<ArchipelagoPackage> targets = List.of(pA, pB);
 

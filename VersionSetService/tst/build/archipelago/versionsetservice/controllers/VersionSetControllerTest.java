@@ -70,7 +70,7 @@ public class VersionSetControllerTest {
 
     @Test
     public void testGetValidVersionSet() throws VersionSetDoseNotExistsException, Exception {
-        String vsName = "TestVS\\" + RevisionUtil.getRandomRevisionId();
+        String vsName = "TestVS-" + RevisionUtil.getRandomRevisionId();
         VersionSet vs = createValidVS(vsName);
         when(getVersionSetDelegate.getVersionSet(eq(vsName))).thenReturn(vs);
 
@@ -88,7 +88,7 @@ public class VersionSetControllerTest {
 
     @Test
     public void testGetValidVersionSetWithRevision() throws VersionSetDoseNotExistsException, Exception {
-        String vsName = "TestVS\\" + RevisionUtil.getRandomRevisionId();
+        String vsName = "TestVS-" + RevisionUtil.getRandomRevisionId();
         String revisionId = RevisionUtil.getRandomRevisionId();
         Instant created = Instant.now();
         VersionSet vs = VersionSet.builder()
@@ -122,7 +122,7 @@ public class VersionSetControllerTest {
     public void testGetValidVersionSetWithDifferentVSNames() throws VersionSetDoseNotExistsException, Exception {
         testVSName(RevisionUtil.getRandomRevisionId());
         testVSName(RevisionUtil.getRandomRevisionId() + "-");
-        testVSName(RevisionUtil.getRandomRevisionId() + "\\");
+        testVSName(RevisionUtil.getRandomRevisionId() + "_");
         testVSName(RevisionUtil.getRandomRevisionId() + "-" + RevisionUtil.getRandomRevisionId());
         testVSName(RevisionUtil.getRandomRevisionId() + "_" + RevisionUtil.getRandomRevisionId());
     }

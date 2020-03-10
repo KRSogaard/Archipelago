@@ -36,8 +36,8 @@ public class CreateVersionSetDelegateTest {
 
     @Before
     public void setUp() {
-        testVSName = "TestVS\\" + RevisionUtil.getRandomRevisionId();
-        parentVSName = "parent\\" + RevisionUtil.getRandomRevisionId();
+        testVSName = "TestVS-" + RevisionUtil.getRandomRevisionId();
+        parentVSName = "parent-" + RevisionUtil.getRandomRevisionId();
 
         versionSetService = mock(VersionSetService.class);
         packageServiceClient = mock(PackageServiceClient.class);
@@ -93,7 +93,7 @@ public class CreateVersionSetDelegateTest {
 
     private VersionSet createVS(String vsName, List<ArchipelagoPackage> targets) {
         Instant created = Instant.now();
-        String vsParentName = "parent/master";
+        String vsParentName = "parent-master";
         String revisionId = "123";
         Instant revisionDate = Instant.now();
         Revision revisionA = Revision.builder()

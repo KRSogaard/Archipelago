@@ -30,7 +30,7 @@ public class GetVersionSetDelegateTest {
 
     @Test
     public void getVersionSetThatExists() throws VersionSetDoseNotExistsException {
-        String vsName = "TestVS\\master";
+        String vsName = "TestVS-master";
         Instant created = Instant.now();
         String vsParentName = "TestParentVS/master";
         ArchipelagoPackage pA = ArchipelagoPackage.parse("TestPackageA-1.0");
@@ -77,7 +77,7 @@ public class GetVersionSetDelegateTest {
 
     @Test(expected = VersionSetDoseNotExistsException.class)
     public void getVersionSetThatDoseNotExists() throws VersionSetDoseNotExistsException {
-        String vsName = "TestVS\\master";
+        String vsName = "TestVS-master";
         when(versionSetService.get(eq(vsName))).thenReturn(null);
         delegate.getVersionSet(vsName);
     }

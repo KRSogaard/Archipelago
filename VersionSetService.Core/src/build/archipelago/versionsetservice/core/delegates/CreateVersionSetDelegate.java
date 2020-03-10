@@ -35,7 +35,6 @@ public class CreateVersionSetDelegate {
             throw new VersionSetExistsException(name);
         }
 
-
         PackageVerificationResult<ArchipelagoPackage> targetsVerified = packageServiceClient.verifyPackagesExists(targets);
         if (!targetsVerified.isValid()) {
             throw new PackageNotFoundException(targets);
