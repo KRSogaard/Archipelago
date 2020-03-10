@@ -7,10 +7,12 @@ import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExis
 import build.archipelago.versionsetservice.core.models.Revision;
 import build.archipelago.versionsetservice.core.models.VersionSet;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;
+import build.archipelago.versionsetservice.core.utils.NameUtil;
 import build.archipelago.versionsetservice.core.utils.RevisionUtil;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import java.time.Instant;
 import java.util.*;
@@ -118,13 +120,18 @@ public class DynamoDbVersionSetService implements VersionSetService {
     public void create(final String name, final List<ArchipelagoPackage> targets, final Optional<String> parent) {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(targets);
+        for (ArchipelagoPackage t : targets) {
+            if (t instanceof ArchipelagoBuiltPackage) {
+                throw new IllegalArgumentException(t.getConcatenated() + " can not have a build version");
+            }
+        }
 
         ImmutableMap.Builder<String, AttributeValue> map = ImmutableMap.<String, AttributeValue>builder()
                 .put(Constants.ATTRIBUTE_NAME, AV.of(sanitizeName(name)))
                 .put(Constants.ATTRIBUTE_DISPLAY_NAME, AV.of(name))
                 .put(Constants.ATTRIBUTE_CREATED, AV.of(Instant.now()))
                 .put(Constants.ATTRIBUTE_TARGETS,
-                    AV.of(targets.stream().map(x -> x.getConcatenated()).collect(Collectors.toList())));
+                    AV.of(targets.stream().map(x -> ((ArchipelagoPackage)x).getConcatenated()).collect(Collectors.toList())));
         if (parent != null && parent.isPresent()) {
             map.put(Constants.ATTRIBUTE_PARENT, AV.of(sanitizeName(parent.get())));
         }

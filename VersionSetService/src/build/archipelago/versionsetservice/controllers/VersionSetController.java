@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.ws.rs.PathParam;
 
 @RestController
 @RequestMapping("version-sets")
@@ -55,22 +56,29 @@ public class VersionSetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void createVersionSet(CreateVersionSetRequest request) throws
+    public void createVersionSet(@RequestBody CreateVersionSetRequest request) throws
             VersionSetDoseNotExistsException, VersionSetExistsException, PackageNotFoundException {
         request.validate();
 
         List<ArchipelagoPackage> targets = request.getTargets().stream()
                 .map(ArchipelagoPackage::parse).collect(Collectors.toList());
 
-        createVersionSetDelegate.create(request.getName(), targets, request.getParent());
+        Optional<String> parent = Optional.empty();
+        if (!Strings.isNullOrEmpty(request.getParent())) {
+            parent = Optional.of(request.getParent());
+        }
+        createVersionSetDelegate.create(request.getName(), targets, parent);
     }
 
     @PostMapping("/{versionSet}")
     @ResponseStatus(HttpStatus.OK)
     public CreateVersionSetRevisionResponse createVersionSetRevision(
+            @PathVariable("versionSet") String versionSetName,
             @RequestBody CreateVersionSetRevisionRequest request) throws VersionSetDoseNotExistsException,
             MissingTargetPackageException, PackageNotFoundException {
+        request.setVersionSetName(versionSetName);
         request.validate();
+
         List<ArchipelagoBuiltPackage> packages = request.getPackages().stream()
                 .map(ArchipelagoBuiltPackage::parse).collect(Collectors.toList());
 

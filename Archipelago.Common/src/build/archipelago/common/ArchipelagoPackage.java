@@ -3,7 +3,11 @@ package build.archipelago.common;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
+import java.util.regex.Pattern;
+
 public class ArchipelagoPackage {
+
+    private final static Pattern VERSION_PATTERN = Pattern.compile("^[^:]+$");
 
     private String name;
     private String version;
@@ -15,6 +19,10 @@ public class ArchipelagoPackage {
         }
         String pkgName = value.substring(0, i);
         String version = (i == value.length()-1) ? null : value.substring(i + 1);
+        if (Strings.isNullOrEmpty(version) || !VERSION_PATTERN.matcher(version).find()) {
+            throw new IllegalArgumentException("Version \"" + version + "\" of \"" + value + "\" is not a valid");
+        }
+
         return new ArchipelagoPackage(pkgName, version);
     }
 

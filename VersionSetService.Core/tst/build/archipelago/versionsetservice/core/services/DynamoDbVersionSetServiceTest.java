@@ -4,6 +4,7 @@ import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
 import build.archipelago.versionsetservice.core.utils.RevisionUtil;
+import build.archipelago.versionsetservice.core.utils.TestConstants;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import com.google.common.collect.ImmutableList;
@@ -33,17 +34,15 @@ public class DynamoDbVersionSetServiceTest {
 
     @Test
     public void testGetVersionSetThatDoNotExists() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
+        String name = "kasperTest-" + prefix;
         Assert.assertNull(vsService.get(name));
     }
 
     @Test
     public void testCreateVersionSetAndGet() throws VersionSetDoseNotExistsException {
         Instant start = Instant.now();
-        String name = "kasperTest/" + prefix;
-        List<ArchipelagoPackage> targets = ImmutableList.of(
-                new ArchipelagoBuiltPackage("TestPackageA", "1.0", getRandomHash())
-        );
+        String name = "kasperTest-" + prefix;
+        List<ArchipelagoPackage> targets = ImmutableList.of(TestConstants.pkgA);
         String parent = "master";
         vsService.create(name, targets, Optional.of(parent));
         Instant end = Instant.now();
@@ -61,15 +60,12 @@ public class DynamoDbVersionSetServiceTest {
     @Test
     public void testCreateVSRevision() throws VersionSetDoseNotExistsException {
         Instant start = Instant.now();
-        String name = "kasperTest/" + prefix;
-        ArchipelagoBuiltPackage packageA = new ArchipelagoBuiltPackage("TestPackageA", "1.0",
-                getRandomHash());
-        ArchipelagoBuiltPackage packageB = new ArchipelagoBuiltPackage("TestPackageB", "2.1",
-                getRandomHash());
+        String name = "kasperTest-" + prefix;
 
         String parent = "master";
-        vsService.create(name, ImmutableList.of(packageA), Optional.of(parent));
-        String revision = vsService.createRevision(name, ImmutableList.of(packageA, packageB));
+        vsService.create(name, ImmutableList.of(TestConstants.pkgA), Optional.of(parent));
+        String revision = vsService.createRevision(name, ImmutableList.of(TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         Instant end = Instant.now();
 
         var vs = vsService.get(name);
@@ -87,21 +83,18 @@ public class DynamoDbVersionSetServiceTest {
     @Test
     public void testCreateMultipleVSRevision() throws VersionSetDoseNotExistsException {
         Instant start = Instant.now();
-        String name = "kasperTest/" + prefix;
-        String packageA = "TestPackageA"; ;
-        String packageB = "TestPackageB";
+        String name = "kasperTest-" + prefix;
         String parent = "master";
-        vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+        vsService.create(name, ImmutableList.of(TestConstants.pkgA), Optional.of(parent));
         vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         String revision = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         Instant end = Instant.now();
 
         var vs = vsService.get(name);
@@ -118,21 +111,18 @@ public class DynamoDbVersionSetServiceTest {
 
     @Test
     public void testGetRevisions() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
-        String packageA = "TestPackageA";
-        String packageB = "TestPackageB";
+        String name = "kasperTest-" + prefix;
         String parent = "master";
-        vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+        vsService.create(name, ImmutableList.of(TestConstants.pkgA), Optional.of(parent));
         String revision1 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         String revision2 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
         String revision3 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
 
         var vs = vsService.get(name);
         Assert.assertNotNull(vs);
@@ -145,23 +135,23 @@ public class DynamoDbVersionSetServiceTest {
 
     @Test(expected = VersionSetDoseNotExistsException.class)
     public void testCreateRevisionForNonExsistingVS() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
+        String name = "kasperTest-" + prefix;
         String packageA = "TestPackageA";
         String packageB = "TestPackageB";
 
         vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", getRandomHash()),
-                new ArchipelagoBuiltPackage(packageB, "1.0", getRandomHash())));
+                TestConstants.pkgABuild,
+                TestConstants.pkgBBuild));
     }
 
     @Test
     public void testGetPackagesForVersionSetRevision() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
+        String name = "kasperTest-" + prefix;
         String packageA = "TestPackageA"; ;
         String packageB = "TestPackageB";
         String parent = "master";
         vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+                TestConstants.pkgA), Optional.of(parent));
         String revision1 = vsService.createRevision(name, ImmutableList.of(
                 new ArchipelagoBuiltPackage(packageA, "1.0", "1"),
                 new ArchipelagoBuiltPackage(packageB, "1.0", "1")));
@@ -181,18 +171,15 @@ public class DynamoDbVersionSetServiceTest {
 
     @Test
     public void testGetPackagesForVersionSetRevisionEnsureRightVersion() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
-        String packageA = "TestPackageA"; ;
-        String packageB = "TestPackageB";
+        String name = "kasperTest-" + prefix;
         String parent = "master";
-        vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+        vsService.create(name, ImmutableList.of(TestConstants.pkgA), Optional.of(parent));
         vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", "1"),
-                new ArchipelagoBuiltPackage(packageB, "1.0", "1")));
+                new ArchipelagoBuiltPackage(TestConstants.pkgA.getName(), "1.0", "1"),
+                new ArchipelagoBuiltPackage(TestConstants.pkgB.getName(), "1.0", "1")));
         String revision2 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.1", "2"),
-                new ArchipelagoBuiltPackage(packageB, "1.1", "2")));
+                new ArchipelagoBuiltPackage(TestConstants.pkgA.getName(), "1.1", "2"),
+                new ArchipelagoBuiltPackage(TestConstants.pkgB.getName(), "1.1", "2")));
 
         var vs = vsService.get(name);
         Assert.assertNotNull(vs);
@@ -205,26 +192,24 @@ public class DynamoDbVersionSetServiceTest {
         var pkgs = revision.getPackages();
         Assert.assertNotNull(pkgs);
         Assert.assertEquals(2, pkgs.size());
-        Assert.assertTrue(pkgs.stream().anyMatch(x -> packageA.equals(x.getName()) &&
+        Assert.assertTrue(pkgs.stream().anyMatch(x -> TestConstants.pkgA.getName().equals(x.getName()) &&
                 "1.1".equals(x.getVersion()) && "2".equals(x.getHash())));
-        Assert.assertTrue(pkgs.stream().anyMatch(x -> packageB.equals(x.getName()) &&
+        Assert.assertTrue(pkgs.stream().anyMatch(x -> TestConstants.pkgB.getName().equals(x.getName()) &&
                 "1.1".equals(x.getVersion()) && "2".equals(x.getHash())));
     }
 
     @Test
     public void testGetPackagesForVersionSetRevisionGetEarlierVersion() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
-        String packageA = "TestPackageA"; ;
-        String packageB = "TestPackageB";
+        String name = "kasperTest-" + prefix;
         String parent = "master";
         vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+                TestConstants.pkgA), Optional.of(parent));
         String revision1 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", "1"),
-                new ArchipelagoBuiltPackage(packageB, "1.0", "1")));
+                new ArchipelagoBuiltPackage(TestConstants.pkgA.getName(), "1.0", "1"),
+                new ArchipelagoBuiltPackage(TestConstants.pkgB.getName(), "1.0", "1")));
         String revision2 = vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.1", "2"),
-                new ArchipelagoBuiltPackage(packageB, "1.1", "2")));
+                new ArchipelagoBuiltPackage(TestConstants.pkgA.getName(), "1.1", "2"),
+                new ArchipelagoBuiltPackage(TestConstants.pkgB.getName(), "1.1", "2")));
 
         var vs = vsService.get(name);
         Assert.assertNotNull(vs);
@@ -235,29 +220,27 @@ public class DynamoDbVersionSetServiceTest {
         var pkgs = revision.getPackages();
         Assert.assertNotNull(pkgs);
         Assert.assertEquals(2, pkgs.size());
-        Assert.assertTrue(pkgs.stream().anyMatch(x -> packageA.equals(x.getName()) &&
+        Assert.assertTrue(pkgs.stream().anyMatch(x -> TestConstants.pkgA.getName().equals(x.getName()) &&
                 "1.0".equals(x.getVersion()) && "1".equals(x.getHash())));
-        Assert.assertTrue(pkgs.stream().anyMatch(x -> packageB.equals(x.getName()) &&
+        Assert.assertTrue(pkgs.stream().anyMatch(x -> TestConstants.pkgB.getName().equals(x.getName()) &&
                 "1.0".equals(x.getVersion()) && "1".equals(x.getHash())));
     }
 
     @Test(expected = VersionSetDoseNotExistsException.class)
     public void testGetPackagesForVersionSetThatDoseNotExists() throws VersionSetDoseNotExistsException {
-        String name = "kasperTest/" + prefix;
+        String name = "kasperTest-" + prefix;
         vsService.getRevision(name, "1234");
     }
 
     @Test(expected = VersionSetDoseNotExistsException.class)
     public void testGetPackagesForVersionSetRevisionThatDoseNotExists() throws VersionSetDoseNotExistsException {
         String name = "kasperTest/" + prefix;
-        String packageA = "TestPackageA"; ;
-        String packageB = "TestPackageB";
         String parent = "master";
         vsService.create(name, ImmutableList.of(
-                new ArchipelagoPackage(packageA, "1.0")), Optional.of(parent));
+                TestConstants.pkgA), Optional.of(parent));
         vsService.createRevision(name, ImmutableList.of(
-                new ArchipelagoBuiltPackage(packageA, "1.0", "1"),
-                new ArchipelagoBuiltPackage(packageB, "1.0", "1")));
+                new ArchipelagoBuiltPackage(TestConstants.pkgA.getName(), "1.0", "1"),
+                new ArchipelagoBuiltPackage(TestConstants.pkgB.getName(), "1.0", "1")));
 
         vsService.getRevision(name, getRandomHash());
     }

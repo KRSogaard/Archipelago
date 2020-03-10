@@ -17,12 +17,11 @@ import java.util.Optional;
 public class CreateVersionSetRequest {
     private String name;
     private List<String> targets;
-    private Optional<String> parent;
+    private String parent;
 
     public void validate() throws IllegalArgumentException {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(name), "Name is required");
-        if (parent.isPresent()) {
-            Preconditions.checkArgument(!Strings.isNullOrEmpty(parent.get()), "Parent is required");
-        }
+        Preconditions.checkNotNull(targets, "At least 1 target is required");
+        Preconditions.checkArgument(targets.size() > 0, "At least 1 target is required");
     }
 }
