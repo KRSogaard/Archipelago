@@ -74,7 +74,13 @@ project(':PackageService') {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'application'
 
-    mainClassName = 'build.archipelago.kauai.Application'
+    mainClassName = 'build.archipelago.packageservice.Application'
+
+    configurations {
+        all {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
 
     dependencies {
         implementation project(':PackageService.Core')
@@ -83,6 +89,7 @@ project(':PackageService') {
 
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
         implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
         implementation 'com.amazonaws:aws-java-sdk-s3:1.11.692'
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
@@ -131,15 +138,21 @@ project(':VersionSetService') {
 
     mainClassName = 'build.archipelago.versionsetservice.Application'
 
+    configurations {
+        all {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        }
+    }
+
     dependencies {
         implementation project(':VersionSetService.Core')
         implementation project(':Archipelago.Common')
         implementation project(':PackageService.Common')
         implementation project(':PackageService.Client')
-        implementation project(':PackageService.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
         implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
 
         testImplementation 'com.google.code.gson:gson:2.8.6'

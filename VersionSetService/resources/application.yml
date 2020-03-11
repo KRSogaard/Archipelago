@@ -23,6 +23,7 @@ s3:
   packages:
     name: "alpha-archipelago-packages"
 
+
 dynamodb:
   versionsets:
     name: "versionsets.alpha"

@@ -58,6 +58,7 @@ public class VersionSetController {
     @ResponseStatus(HttpStatus.OK)
     public void createVersionSet(@RequestBody CreateVersionSetRequest request) throws
             VersionSetDoseNotExistsException, VersionSetExistsException, PackageNotFoundException {
+        log.info("Create version Set Request: {}", request);
         request.validate();
 
         List<ArchipelagoPackage> targets = request.getTargets().stream()
@@ -68,6 +69,7 @@ public class VersionSetController {
             parent = Optional.of(request.getParent());
         }
         createVersionSetDelegate.create(request.getName(), targets, parent);
+        log.debug("Version set \"{}\" was successfully installed", request.getName());
     }
 
     @PostMapping("/{versionSet}")
@@ -76,6 +78,7 @@ public class VersionSetController {
             @PathVariable("versionSet") String versionSetName,
             @RequestBody CreateVersionSetRevisionRequest request) throws VersionSetDoseNotExistsException,
             MissingTargetPackageException, PackageNotFoundException {
+        log.info("Request to created revision for version set \"{}\": {}", versionSetName, request);
         request.setVersionSetName(versionSetName);
         request.validate();
 
@@ -85,6 +88,7 @@ public class VersionSetController {
         String revisionId = createVersionSetRevisionDelegate.createRevision(
                 request.getVersionSetName(), packages);
 
+        log.debug("New revision \"{}\" was created for version set \"{}\"", revisionId, versionSetName);
         return CreateVersionSetRevisionResponse.builder()
                 .revisionId(revisionId)
                 .build();
@@ -94,12 +98,13 @@ public class VersionSetController {
     @ResponseStatus(HttpStatus.OK)
     public VersionSetResponse getVersionSet(@PathVariable("versionSet") String versionSetName)
             throws VersionSetDoseNotExistsException {
+        log.info("Request to get version set \"{}\"", versionSetName);
         Preconditions.checkArgument(!Strings.isNullOrEmpty(versionSetName),
                 "Version Set name is required");
 
         VersionSet vs = getVersionSetDelegate.getVersionSet(versionSetName);
 
-        return VersionSetResponse.builder()
+        VersionSetResponse response = VersionSetResponse.builder()
                 .name(vs.getName())
                 .created(vs.getCreated().toEpochMilli())
                 .parent(vs.getParent())
@@ -110,6 +115,8 @@ public class VersionSetController {
                         vs.getLatestRevisionCreated() != null && vs.getLatestRevisionCreated().isPresent() ?
                         Optional.of(vs.getLatestRevisionCreated().get().toEpochMilli()) : Optional.empty())
                 .build();
+        log.debug("Returning version set \"{}\": {}", versionSetName, response);
+        return response;
     }
 
     @GetMapping("{versionSet}/{revision}")
@@ -117,6 +124,7 @@ public class VersionSetController {
     public VersionSetRevisionResponse getVersionSetPackages(@PathVariable("versionSet") String versionSetName,
                                                          @PathVariable("revision") String revisionId)
             throws VersionSetDoseNotExistsException {
+        log.info("Request to get version set packages for \"{}\" revision \"{}\"", versionSetName, revisionId);
         Preconditions.checkArgument(!Strings.isNullOrEmpty(versionSetName),
                 "Version Set name is required");
         Preconditions.checkArgument(!Strings.isNullOrEmpty(revisionId),
@@ -124,11 +132,14 @@ public class VersionSetController {
 
         VersionSetRevision revision = getVersionSetPackagesDelegate.getPackages(versionSetName, revisionId);
 
-        return VersionSetRevisionResponse.builder()
+        VersionSetRevisionResponse response = VersionSetRevisionResponse.builder()
                 .created(revision.getCreated().toEpochMilli())
                 .packages(revision.getPackages().stream()
                         .map(ArchipelagoBuiltPackage::getConcatenated).collect(Collectors.toList()))
                 .build();
+        log.debug("Found {} packages for version set \"{}:{}\": {}",
+                response.getPackages().size(), versionSetName, revisionId, response);
+        return response;
     }
 
 }

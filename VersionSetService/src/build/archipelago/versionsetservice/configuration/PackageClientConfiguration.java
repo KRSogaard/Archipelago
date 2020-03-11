@@ -10,6 +10,7 @@ import build.archipelago.packageservice.client.models.UploadPackageRequest;
 import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.nio.file.Path;
@@ -19,6 +20,7 @@ import java.util.List;
 @Configuration
 public class PackageClientConfiguration {
 
+    @Bean
     public PackageServiceClient getPackageServiceClient() {
         return new PackageServiceClient() {
             @Override
