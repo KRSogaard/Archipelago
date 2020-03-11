@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="TRACE" monitorInterval="30">
+<Configuration status="DEBUG" monitorInterval="30">
     <Properties>
         <Property name="LOG_PATTERN">
             %d{HH:mm:ss.SSS}[%p][%X{RequestId}][%c]: %msg%n
@@ -35,9 +35,10 @@
         <Logger name="org.hibernate" level="ERROR" />
         <Logger name="com.amazonaws" level="ERROR" />
         <Logger name="org.apache" level="ERROR" />
+        <Logger name="springfox.documentation" level="ERROR" />
         <Logger name="build.archipelago" level="DEBUG" />
 
-        <Root level="TRACE">
+        <Root level="DEBUG">
             <AppenderRef ref="File" level="DEBUG" />
             <AppenderRef ref="ConsoleAppender" level="INFO" />
         </Root>
