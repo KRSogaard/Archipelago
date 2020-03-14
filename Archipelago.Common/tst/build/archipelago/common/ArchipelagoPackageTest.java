@@ -3,12 +3,9 @@ package build.archipelago.common;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class ArchipelagoPackageTest {
     String name = "Package1";
@@ -58,7 +55,7 @@ public class ArchipelagoPackageTest {
     @Test
     public void testConstructorWithNameAndVersion() {
         ArchipelagoPackage pkg = new ArchipelagoPackage(name, version);
-        assertEquals(name + "-" + version, pkg.getConcatenated());
+        assertEquals(name + "-" + version, pkg.toString());
     }
 
 }

@@ -2,7 +2,7 @@ package build.archipelago.packageservice.core.delegates.getBuildArtifact;
 
 import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.data.PackageData;
-import build.archipelago.packageservice.core.data.models.PackageDataModel;
+import build.archipelago.packageservice.core.data.models.PackageDetails;
 import build.archipelago.packageservice.core.storage.PackageStorage;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -33,18 +33,18 @@ public class GetBuildArtifactDelegate {
         if (!hash.isPresent() || Constants.LATEST.equalsIgnoreCase(hash.get())) {
             latestHash = packageData.getLatestHash(nameVersion);
             if (!latestHash.isPresent()) {
-                log.info("Was not able to find latest hash for package {}", nameVersion.getConcatenated());
+                log.info("Was not able to find latest hash for package {}", nameVersion.toString());
                 return Optional.empty();
             }
         }
         final String packageHash = latestHash.orElse(hash.get()).toLowerCase();
 
         if (!packageData.buildExists(nameVersion, packageHash)) {
-            log.info("Was unable to find package \"{}\" hash \"{}\"", nameVersion.getConcatenated(), packageHash);
+            log.info("Was unable to find package \"{}\" hash \"{}\"", nameVersion.toString(), packageHash);
             return Optional.empty();
         }
 
-        Optional<PackageDataModel> pkg = packageData.getPackage(nameVersion.getName());
+        Optional<PackageDetails> pkg = packageData.getPackage(nameVersion.getName());
         if (!pkg.isPresent()) {
             log.error("Was unable to find the package");
         }

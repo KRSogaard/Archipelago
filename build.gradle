@@ -28,19 +28,8 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
 
-    sourceCompatibility = 13
-    targetCompatibility = 13
-
-    // Ena ble preview
-    tasks.test {
-        jvmArgs("--enable-preview")
-    }
-    tasks.withType(JavaCompile) {
-        options.compilerArgs += "--enable-preview"
-    }
-    tasks.withType(JavaExec) {
-        jvmArgs += '--enable-preview'
-    }
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
     dependencies {
         // Test framework
@@ -114,8 +103,9 @@ project(':PackageService') {
 }
 project(':PackageService.Core') {
     dependencies {
-        implementation project(':Archipelago.Common')
         implementation project(':PackageService.Common')
+        implementation project(':Archipelago.Common')
+        implementation project(':Archipelago.Common.DynamoDB')
 
         implementation 'com.amazonaws:aws-java-sdk-s3:1.11.692'
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'

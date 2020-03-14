@@ -148,7 +148,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, vsName, targets.get(0).getConcatenated())))
+                    """, vsName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -156,7 +156,7 @@ public class VersionSetControllerTest {
                 eq(vsName),
                 argThat(given -> {
                     for (ArchipelagoPackage p : targets) {
-                        if (given.stream().noneMatch(x -> x.getConcatenated().equals(p.getConcatenated()))) {
+                        if (given.stream().noneMatch(x -> x.toString().equals(p.toString()))) {
                             return false;
                         }
                     }
@@ -183,7 +183,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, vsName, targets.get(0).getConcatenated())))
+                    """, vsName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
@@ -204,7 +204,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, vsName, targets.get(0).getConcatenated(), targets.get(1).getConcatenated())))
+                    """, vsName, targets.get(0).toString(), targets.get(1).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -212,7 +212,7 @@ public class VersionSetControllerTest {
                 eq(vsName),
                 argThat(given -> {
                     for (ArchipelagoPackage p : targets) {
-                        if (given.stream().noneMatch(x -> x.getConcatenated().equals(p.getConcatenated()))) {
+                        if (given.stream().noneMatch(x -> x.toString().equals(p.toString()))) {
                             return false;
                         }
                     }
@@ -290,7 +290,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, vsName, TestConstants.pkgA.getConcatenated() + ":" + RevisionUtil.getRandomRevisionId())))
+                    """, vsName, TestConstants.pkgA.toString() + ":" + RevisionUtil.getRandomRevisionId())))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -312,7 +312,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, vsName, vsParentName, targets.get(0).getConcatenated())))
+                    """, vsName, vsParentName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -320,7 +320,7 @@ public class VersionSetControllerTest {
                 eq(vsName),
                 argThat(given -> {
                     for (ArchipelagoPackage p : targets) {
-                        if (given.stream().noneMatch(x -> x.getConcatenated().equals(p.getConcatenated()))) {
+                        if (given.stream().noneMatch(x -> x.toString().equals(p.toString()))) {
                             return false;
                         }
                     }
@@ -345,8 +345,8 @@ public class VersionSetControllerTest {
                             "%s", "%s", "%s"
                         ]
                     }
-                    """, targets.get(0).getConcatenated(), targets.get(1).getConcatenated(),
-                        targets.get(2).getConcatenated())))
+                    """, targets.get(0).toString(), targets.get(1).toString(),
+                        targets.get(2).toString())))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -356,7 +356,7 @@ public class VersionSetControllerTest {
                 eq(vsName),
                 argThat(given -> {
                     for (ArchipelagoBuiltPackage p : targets) {
-                        if (given.stream().noneMatch(x -> x.getConcatenated().equals(p.getConcatenated()))) {
+                        if (given.stream().noneMatch(x -> x.toString().equals(p.toString()))) {
                             return false;
                         }
                     }
@@ -387,7 +387,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, targets.get(0).getConcatenated())))
+                    """, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -405,7 +405,7 @@ public class VersionSetControllerTest {
                             "%s"
                         ]
                     }
-                    """, TestConstants.pkgA.getConcatenated())))
+                    """, TestConstants.pkgA.toString())))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -435,7 +435,7 @@ public class VersionSetControllerTest {
         Assert.assertEquals((Long)created.toEpochMilli(), response.getCreated());
         for (ArchipelagoBuiltPackage p : packages) {
             Assert.assertTrue(response.getPackages().stream()
-                    .anyMatch(x -> x != null &&  x.equals(p.getConcatenated())));
+                    .anyMatch(x -> x != null &&  x.equals(p.toString())));
         }
     }
 

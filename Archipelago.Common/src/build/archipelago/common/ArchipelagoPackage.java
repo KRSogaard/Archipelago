@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 public class ArchipelagoPackage {
 
     private final static Pattern VERSION_PATTERN = Pattern.compile("^[^:]+$");
+    private final static Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z0-9]+$");
 
     private String name;
     private String version;
@@ -19,22 +20,25 @@ public class ArchipelagoPackage {
         }
         String pkgName = value.substring(0, i);
         String version = (i == value.length()-1) ? null : value.substring(i + 1);
-        if (Strings.isNullOrEmpty(version) || !VERSION_PATTERN.matcher(version).find()) {
-            throw new IllegalArgumentException("Version \"" + version + "\" of \"" + value + "\" is not a valid");
-        }
-
         return new ArchipelagoPackage(pkgName, version);
     }
 
     public ArchipelagoPackage(String name, String version) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(name), "Name is required");
         Preconditions.checkArgument(!Strings.isNullOrEmpty(version), "Version is required");
+        Preconditions.checkArgument(validateName(name), "The name \"" + name + "\" was not valid");
+        Preconditions.checkArgument(validateVersion(version), "The version \"" + version + "\" was not valid");
 
         this.name = name;
         this.version = version;
     }
 
-    public String getConcatenated() {
+    @Override
+    public String toString() {
+        return getNameVersion();
+    }
+
+    public String getNameVersion() {
         return String.format("%s-%s", name, version);
     }
 
@@ -52,5 +56,12 @@ public class ArchipelagoPackage {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static boolean validateName(String name) {
+        return NAME_PATTERN.matcher(name).find();
+    }
+    public static boolean validateVersion(String version) {
+        return VERSION_PATTERN.matcher(version).find();
     }
 }

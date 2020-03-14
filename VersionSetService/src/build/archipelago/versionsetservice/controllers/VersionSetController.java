@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.ws.rs.PathParam;
 
 @RestController
 @RequestMapping("version-sets")
@@ -108,7 +107,7 @@ public class VersionSetController {
                 .name(vs.getName())
                 .created(vs.getCreated().toEpochMilli())
                 .parent(vs.getParent())
-                .targets(vs.getTargets().stream().map(ArchipelagoPackage::getConcatenated).collect(Collectors.toList()))
+                .targets(vs.getTargets().stream().map(ArchipelagoPackage::toString).collect(Collectors.toList()))
                 .revisions(vs.getRevisions().stream().map(RevisionIdResponse::from).collect(Collectors.toList()))
                 .latestRevision(vs.getLatestRevision())
                 .latestRevisionCreated(
@@ -135,7 +134,7 @@ public class VersionSetController {
         VersionSetRevisionResponse response = VersionSetRevisionResponse.builder()
                 .created(revision.getCreated().toEpochMilli())
                 .packages(revision.getPackages().stream()
-                        .map(ArchipelagoBuiltPackage::getConcatenated).collect(Collectors.toList()))
+                        .map(ArchipelagoBuiltPackage::toString).collect(Collectors.toList()))
                 .build();
         log.debug("Found {} packages for version set \"{}:{}\": {}",
                 response.getPackages().size(), versionSetName, revisionId, response);

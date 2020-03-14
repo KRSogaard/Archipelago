@@ -122,7 +122,7 @@ public class ArtifactControllerTest {
                 .thenReturn(Optional.of(response));
 
         this.mockMvc.perform(createGetArtifact(
-                nameVersion.getConcatenated(), Optional.empty()))
+                nameVersion.toString(), Optional.empty()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(byteArray));
@@ -148,7 +148,7 @@ public class ArtifactControllerTest {
                 .thenReturn(Optional.of(response));
 
         this.mockMvc.perform(createGetArtifact(
-                nameVersion.getConcatenated(), Optional.of(hash)))
+                nameVersion.toString(), Optional.of(hash)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(byteArray));
@@ -167,7 +167,7 @@ public class ArtifactControllerTest {
                 .thenReturn(Optional.empty());
 
         this.mockMvc.perform(createGetArtifact(
-                nameVersion.getConcatenated(), Optional.empty()))
+                nameVersion.toString(), Optional.empty()))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -185,7 +185,7 @@ public class ArtifactControllerTest {
                 .thenReturn(Optional.empty());
 
         this.mockMvc.perform(createGetArtifact(
-                nameVersion.getConcatenated(), Optional.empty()))
+                nameVersion.toString(), Optional.empty()))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -204,7 +204,7 @@ public class ArtifactControllerTest {
                 .thenReturn(Optional.empty());
 
         this.mockMvc.perform(createGetArtifact(
-                nameVersion.getConcatenated(), Optional.of(hash)))
+                nameVersion.toString(), Optional.of(hash)))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

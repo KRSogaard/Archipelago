@@ -84,7 +84,7 @@ public class ArtifactController {
             throw new PackageNotFoundException(nameVersion, hash);
         }
 
-        String zipFileName = String.format("%s-%s.zip", response.get().getNameVersion().getConcatenated(),
+        String zipFileName = String.format("%s-%s.zip", response.get().getNameVersion().toString(),
                 response.get().getHash());
 
         return ResponseEntity.ok()

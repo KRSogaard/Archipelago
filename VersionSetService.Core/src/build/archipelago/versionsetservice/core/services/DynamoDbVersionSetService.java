@@ -7,12 +7,10 @@ import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExis
 import build.archipelago.versionsetservice.core.models.Revision;
 import build.archipelago.versionsetservice.core.models.VersionSet;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;
-import build.archipelago.versionsetservice.core.utils.NameUtil;
 import build.archipelago.versionsetservice.core.utils.RevisionUtil;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import java.time.Instant;
 import java.util.*;
@@ -122,7 +120,7 @@ public class DynamoDbVersionSetService implements VersionSetService {
         Preconditions.checkNotNull(targets);
         for (ArchipelagoPackage t : targets) {
             if (t instanceof ArchipelagoBuiltPackage) {
-                throw new IllegalArgumentException(t.getConcatenated() + " can not have a build version");
+                throw new IllegalArgumentException(t.toString() + " can not have a build version");
             }
         }
 
@@ -131,7 +129,7 @@ public class DynamoDbVersionSetService implements VersionSetService {
                 .put(Constants.ATTRIBUTE_DISPLAY_NAME, AV.of(name))
                 .put(Constants.ATTRIBUTE_CREATED, AV.of(Instant.now()))
                 .put(Constants.ATTRIBUTE_TARGETS,
-                    AV.of(targets.stream().map(x -> ((ArchipelagoPackage)x).getConcatenated()).collect(Collectors.toList())));
+                    AV.of(targets.stream().map(x -> ((ArchipelagoPackage)x).toString()).collect(Collectors.toList())));
         if (parent != null && parent.isPresent()) {
             map.put(Constants.ATTRIBUTE_PARENT, AV.of(sanitizeName(parent.get())));
         }
@@ -176,7 +174,7 @@ public class DynamoDbVersionSetService implements VersionSetService {
                 .put(Constants.ATTRIBUTE_REVISION, AV.of(revisionId))
                 .put(Constants.ATTRIBUTE_CREATED, AV.of(now))
                 .put(Constants.ATTRIBUTE_PACKAGES, AV.of(
-                        packages.stream().map(ArchipelagoBuiltPackage::getConcatenated).collect(Collectors.toList())))
+                        packages.stream().map(ArchipelagoBuiltPackage::toString).collect(Collectors.toList())))
                 .build()));
 
 

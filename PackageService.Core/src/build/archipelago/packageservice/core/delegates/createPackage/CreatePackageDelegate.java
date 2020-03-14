@@ -2,7 +2,7 @@ package build.archipelago.packageservice.core.delegates.createPackage;
 
 import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.data.models.CreatePackageModel;
-import build.archipelago.packageservice.core.data.models.PackageDataModel;
+import build.archipelago.packageservice.core.data.models.PackageDetails;
 import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class CreatePackageDelegate {
     public void create(CreatePackageDelegateRequest request) throws PackageExistsException {
         request.validate();
 
-        Optional<PackageDataModel> packageSearch = packageData.getPackage(request.getName());
+        Optional<PackageDetails> packageSearch = packageData.getPackage(request.getName());
         if (packageSearch.isPresent()) {
             throw new PackageExistsException(request.getName());
         }

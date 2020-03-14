@@ -2,8 +2,8 @@ package build.archipelago.packageservice.core.delegates.uploadBuildArtifact;
 
 import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.data.PackageData;
-import build.archipelago.packageservice.core.data.models.PackageBuiltDataModel;
-import build.archipelago.packageservice.core.data.models.PackageDataModel;
+import build.archipelago.packageservice.core.data.models.BuiltPackageDetails;
+import build.archipelago.packageservice.core.data.models.PackageDetails;
 import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.storage.PackageStorage;
@@ -29,7 +29,7 @@ public class UploadBuildArtifactDelegate {
             throws PackageArtifactExistsException, PackageNotFoundException {
         request.validate();
 
-        Optional<PackageDataModel> pkg = packageData.getPackage(request.getNameVersion().getName());
+        Optional<PackageDetails> pkg = packageData.getPackage(request.getNameVersion().getName());
         if (!pkg.isPresent()) {
             throw new PackageNotFoundException(request.getNameVersion().getName());
         }
@@ -41,10 +41,10 @@ public class UploadBuildArtifactDelegate {
             hash = Constants.LATEST;
         }
 
-        Optional<PackageBuiltDataModel> p = packageData.getBuild(nameVersion, hash);
+        Optional<BuiltPackageDetails> p = packageData.getBuild(nameVersion, hash);
         if (p.isPresent()) {
             throw new PackageArtifactExistsException(
-                    nameVersion.getConcatenated() + " [" + request.getHash() + "] already exists"
+                    nameVersion.toString() + " [" + request.getHash() + "] already exists"
             );
         }
 

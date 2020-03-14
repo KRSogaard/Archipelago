@@ -1,9 +1,9 @@
 package build.archipelago.packageservice.controllers;
 
+import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.core.delegates.createPackage.CreatePackageDelegate;
 import build.archipelago.packageservice.core.delegates.createPackage.CreatePackageDelegateRequest;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegate;
-import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateRequest;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateResponse;
 import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
@@ -49,15 +49,19 @@ public class PackagesController {
                 .build());
     }
 
-    @GetMapping(value = "{name}")
+    @GetMapping(value = "{name}/{version}")
     @ResponseStatus(HttpStatus.OK)
-    public GetPackageResponse getPackage(@PathVariable("name") String name) throws PackageNotFoundException {
+    public GetPackageResponse getPackage(
+            @PathVariable("name") String name,
+            @PathVariable("version") String version
+    ) throws PackageNotFoundException {
         Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(version);
+        ArchipelagoPackage pkg = new ArchipelagoPackage(name, version);
 
-        Optional<GetPackageDelegateResponse> responseOptional = getPackageDelegate.get(
-                GetPackageDelegateRequest.builder().name(name).build());
-        if (!responseOptional.isPresent()) {
-            throw new PackageNotFoundException(name);
+        Optional<GetPackageDelegateResponse> responseOptional = getPackageDelegate.get(pkg);
+        if (responseOptional.isEmpty()) {
+            throw new PackageNotFoundException(pkg);
         }
         GetPackageDelegateResponse response = responseOptional.get();
         return GetPackageResponse.builder()

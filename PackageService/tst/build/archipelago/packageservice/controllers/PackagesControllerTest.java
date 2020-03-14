@@ -2,7 +2,6 @@ package build.archipelago.packageservice.controllers;
 
 import build.archipelago.packageservice.core.delegates.createPackage.CreatePackageDelegate;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegate;
-import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateRequest;
 import build.archipelago.packageservice.core.delegates.getPackage.GetPackageDelegateResponse;
 import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.models.GetPackageResponse;
