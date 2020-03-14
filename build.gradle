@@ -47,7 +47,7 @@ subprojects {
         testImplementation group: 'junit', name: 'junit', version: '4.12'
         testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.+'
 
-        compile 'org.slf4j:slf4j-api:1.7.25'
+        implementation 'org.slf4j:slf4j-api:1.7.25'
 
         // Google Guava
         implementation 'com.google.guava:guava:28.0-jre'
@@ -56,7 +56,7 @@ subprojects {
         testImplementation 'commons-io:commons-io:2.6'
 
         // Lombok
-        compile 'org.projectlombok:lombok:1.+'  // utilities for POJOs
+        implementation 'org.projectlombok:lombok:1.+'  // utilities for POJOs
         annotationProcessor 'org.projectlombok:lombok:1.+'
         testAnnotationProcessor 'org.projectlombok:lombok:1.+'
     }
@@ -166,8 +166,8 @@ project(':VersionSetService') {
         }
 
         // Needed for DynamoDBLocal
-        testCompile 'com.amazonaws:DynamoDBLocal:1.12.0'
-        testCompile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+        testImplementation 'com.amazonaws:DynamoDBLocal:1.12.0'
+        testImplementation 'com.almworks.sqlite4java:sqlite4java:1.0.392'
     }
 
     // This allows for the inMemory DynamoDb
@@ -206,8 +206,8 @@ project(':VersionSetService.Core') {
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
 
         // Needed for DynamoDBLocal
-        testCompile 'com.amazonaws:DynamoDBLocal:1.12.0'
-        testCompile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+        testImplementation 'com.amazonaws:DynamoDBLocal:1.12.0'
+        testImplementation 'com.almworks.sqlite4java:sqlite4java:1.0.392'
     }
 
     // This allows for the inMemory DynamoDb
