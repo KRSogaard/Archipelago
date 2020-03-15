@@ -2,9 +2,6 @@ package build.archipelago.common;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import lombok.Data;
-
-import java.util.Optional;
 
 public class ArchipelagoBuiltPackage extends ArchipelagoPackage {
     private String hash;
@@ -36,14 +33,14 @@ public class ArchipelagoBuiltPackage extends ArchipelagoPackage {
     }
 
     @Override
-    public String getConcatenated() {
-        return getConcatenated(false);
+    public String toString() {
+        return toString(false);
     }
 
-    public String getConcatenated(boolean omitHash) {
+    public String toString(boolean omitHash) {
         if (!omitHash) {
-            return String.format("%s:%s", super.getConcatenated(), hash);
+            return String.format("%s:%s", super.toString(), hash);
         }
-        return super.getConcatenated();
+        return super.toString();
     }
 }

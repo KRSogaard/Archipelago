@@ -1,17 +1,13 @@
 package build.archipelago.packageservice.core.delegates.uploadBuildArtifact;
 
-import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.packageservice.core.data.PackageData;
-import build.archipelago.packageservice.core.data.models.PackageBuiltDataModel;
-import build.archipelago.packageservice.core.data.models.PackageDataModel;
-import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
+import build.archipelago.common.ArchipelagoBuiltPackage;
+import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.storage.PackageStorage;
-import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import build.archipelago.packageservice.core.utils.Constants;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 public class UploadBuildArtifactDelegate {
@@ -25,34 +21,17 @@ public class UploadBuildArtifactDelegate {
         this.packageStorage = packageStorage;
     }
 
-    public void uploadArtifact(UploadBuildArtifactDelegateRequest request)
-            throws PackageArtifactExistsException, PackageNotFoundException {
+    public String uploadArtifact(UploadBuildArtifactDelegateRequest request)
+            throws PackageNotFoundException, PackageExistsException {
         request.validate();
 
-        Optional<PackageDataModel> pkg = packageData.getPackage(request.getNameVersion().getName());
-        if (!pkg.isPresent()) {
-            throw new PackageNotFoundException(request.getNameVersion().getName());
-        }
-        ArchipelagoPackage nameVersion = new ArchipelagoPackage(
-                pkg.get().getName(), request.getNameVersion().getVersion());
+        String hash = UUID.randomUUID().toString().split("-")[0];
 
-        String hash = request.getHash();
-        if (Strings.isNullOrEmpty(hash)) {
-            hash = Constants.LATEST;
-        }
+        ArchipelagoBuiltPackage pkg = new ArchipelagoBuiltPackage(request.getPkg(), hash);
+        packageData.createBuild(pkg, request.getConfig());
+        packageStorage.upload(pkg, request.getBuildArtifact());
 
-        Optional<PackageBuiltDataModel> p = packageData.getBuild(nameVersion, hash);
-        if (p.isPresent()) {
-            throw new PackageArtifactExistsException(
-                    nameVersion.getConcatenated() + " [" + request.getHash() + "] already exists"
-            );
-        }
-
-        packageStorage.upload(nameVersion,
-                              request.getHash(),
-                              request.getBuildArtifact());
-
-        packageData.createBuild(request.getNameVersion(), request.getHash(), request.getConfig());
+        return hash;
     }
 
 }

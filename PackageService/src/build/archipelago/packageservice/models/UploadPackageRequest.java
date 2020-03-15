@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadPackageRequest {
     private String name;
     private String version;
-    private String hash;
     private MultipartFile buildArtifact;
     private String config;
 }

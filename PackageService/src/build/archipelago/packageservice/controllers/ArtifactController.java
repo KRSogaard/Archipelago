@@ -1,12 +1,13 @@
 package build.archipelago.packageservice.controllers;
 
 import build.archipelago.common.ArchipelagoPackage;
+import build.archipelago.packageservice.common.exceptions.PackageExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactResponse;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegateRequest;
-import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.models.ArtifactUploadResponse;
 import build.archipelago.packageservice.models.UploadPackageRequest;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
@@ -44,52 +45,51 @@ public class ArtifactController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void uploadBuiltArtifact(@ModelAttribute UploadPackageRequest request)
-            throws PackageArtifactExistsException, PackageNotFoundException {
+    public ArtifactUploadResponse uploadBuiltArtifact(@ModelAttribute UploadPackageRequest request)
+            throws PackageNotFoundException, PackageExistsException {
+        log.info("Request to upload new build: {}", request);
         Preconditions.checkNotNull(request.getBuildArtifact(),
                 "build artifact is required");
         Preconditions.checkArgument(request.getBuildArtifact().getSize() > 0,
                 "build artifact is required");
         try {
-            uploadBuildArtifactDelegate.uploadArtifact(
+            String hash = uploadBuildArtifactDelegate.uploadArtifact(
                     UploadBuildArtifactDelegateRequest.builder()
-                            .nameVersion(new ArchipelagoPackage(request.getName(), request.getVersion()))
-                            .hash(request.getHash())
+                            .pkg(new ArchipelagoPackage(request.getName(), request.getVersion()))
                             .config(request.getConfig())
                             .buildArtifact(request.getBuildArtifact().getBytes())
                             .build()
             );
+            return ArtifactUploadResponse.builder()
+                    .hash(hash)
+                    .build();
         } catch (IOException e) {
             log.error("Failed to read build artifact: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    @GetMapping(value = {"{nameVersion}/{hash}", "{nameVersion}"})
+    @GetMapping(value = {"{name}/{version}/{hash}", "{name}/{version}"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> getBuildArtifact(
-            @PathVariable("nameVersion") String nameAndVersion,
+            @PathVariable("name") String name,
+            @PathVariable("version") String version,
             @PathVariable("hash") Optional<String> hash) throws PackageNotFoundException {
-        ArchipelagoPackage nameVersion = ArchipelagoPackage.parse(nameAndVersion);
-        nameVersion.validate();
+        ArchipelagoPackage pkg = new ArchipelagoPackage(name, version);
 
-        Optional<GetBuildArtifactResponse> response = null;
+        GetBuildArtifactResponse response = null;
         try {
-            response = getBuildArtifactDelegate.getBuildArtifact(nameVersion, hash);
+            response = getBuildArtifactDelegate.getBuildArtifact(pkg, hash);
         } catch (IOException e) {
             log.error("Unable to read build artifact. " + e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-        if (!response.isPresent()) {
-            throw new PackageNotFoundException(nameVersion, hash);
-        }
 
-        String zipFileName = String.format("%s-%s.zip", response.get().getNameVersion().getConcatenated(),
-                response.get().getHash());
+        String zipFileName = String.format("%s.zip", response.getPkg().toString());
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/zip"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + zipFileName + "\"")
-                .body(new ByteArrayResource(response.get().getByteArray()));
+                .body(new ByteArrayResource(response.getByteArray()));
     }
 }

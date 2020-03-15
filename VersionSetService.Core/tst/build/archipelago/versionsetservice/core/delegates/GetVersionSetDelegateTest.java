@@ -63,9 +63,9 @@ public class GetVersionSetDelegateTest {
         Assert.assertEquals(vsParentName, r.getParent().get());
         Assert.assertNotNull(r.getTargets());
         Assert.assertEquals(3, r.getTargets().size());
-        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pA.getConcatenated().equals(x.getConcatenated())));
-        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pB.getConcatenated().equals(x.getConcatenated())));
-        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pC.getConcatenated().equals(x.getConcatenated())));
+        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pA.toString().equals(x.toString())));
+        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pB.toString().equals(x.toString())));
+        Assert.assertTrue(r.getTargets().stream().anyMatch(x -> pC.toString().equals(x.toString())));
         Assert.assertNotNull(r.getRevisions());
         Assert.assertEquals(1, r.getRevisions().size());
         Assert.assertTrue(r.getRevisions().stream().anyMatch(x -> revisionA.getRevisionId().equals(x.getRevisionId())));

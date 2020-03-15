@@ -1,7 +1,18 @@
 package build.archipelago.packageservice.common.exceptions;
 
+import build.archipelago.common.ArchipelagoBuiltPackage;
+import build.archipelago.common.ArchipelagoPackage;
+
 public class PackageExistsException extends Exception {
     public PackageExistsException(String name) {
-        super("A package with the name \"" + name + "\" already exists.");
+        super("The package \"" + name + "\" already exists");
+    }
+
+    public PackageExistsException(ArchipelagoBuiltPackage pkg) {
+        super("The package \"" + pkg + "\" already exists");
+    }
+
+    public PackageExistsException(ArchipelagoPackage pkg) {
+        super("The package \"" + pkg.getNameVersion() + "\" already exists");
     }
 }

@@ -1,9 +1,10 @@
 package build.archipelago.packageservice.core.data.models;
 
+import build.archipelago.common.ArchipelagoPackage;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import lombok.Builder;
 import lombok.Data;
-import build.archipelago.packageservice.core.utils.PackageUtil;
 
 @Data
 @Builder
@@ -12,13 +13,8 @@ public class CreatePackageModel {
     private String description;
 
     public void validate() {
-        Preconditions.checkNotNull(name, "Name is required");
-        Preconditions.checkNotNull(description, "Description is required");
-        Preconditions.checkArgument(name.trim().length() < 3, "Name must be more then 3 letters");
-        Preconditions.checkArgument(name.trim().length() == 0, "Description is required");
-
-        if (!PackageUtil.validatePackageName(name)) {
-            throw new IllegalArgumentException("Name can not have spaces or characters");
-        }
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(name), "Name is required");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(description), "A description is required");
+        Preconditions.checkArgument(ArchipelagoPackage.validateName(name), "The package name \"" + name + "\" was not valid");
     }
 }

@@ -1,20 +1,25 @@
 package build.archipelago.packageservice.core.data;
 
+import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
+import build.archipelago.packageservice.common.exceptions.PackageExistsException;
+import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.packageservice.core.data.models.BuiltPackageDetails;
 import build.archipelago.packageservice.core.data.models.CreatePackageModel;
-import build.archipelago.packageservice.core.data.models.PackageBuiltDataModel;
-import build.archipelago.packageservice.core.data.models.PackageDataModel;
-
-import java.util.Optional;
+import build.archipelago.packageservice.core.data.models.PackageDetails;
+import build.archipelago.packageservice.core.data.models.VersionBuildDetails;
+import com.google.common.collect.ImmutableList;
 
 public interface PackageData {
-    boolean buildExists(ArchipelagoPackage nameVersion, String hash);
-    boolean buildExists(ArchipelagoPackage nameVersion);
+    boolean buildExists(ArchipelagoBuiltPackage pkg);
+    boolean packageVersionExists(ArchipelagoPackage pkg);
     boolean packageExists(String name);
-    Optional<PackageBuiltDataModel> getBuild(ArchipelagoPackage nameVersion, String hash);
-    Optional<PackageBuiltDataModel> getBuild(ArchipelagoPackage nameVersion);
-    Optional<PackageDataModel> getPackage(String name);
-    void createBuild(ArchipelagoPackage nameVersion, String hash, String config);
-    Optional<String> getLatestHash(ArchipelagoPackage nameVersion);
-    void createPackage(CreatePackageModel model);
+
+    PackageDetails getPackageDetails(String name) throws PackageNotFoundException;
+    ImmutableList<VersionBuildDetails> getPackageVersionBuilds(ArchipelagoPackage pkg);
+    BuiltPackageDetails getBuildPackage(ArchipelagoBuiltPackage pkg) throws PackageNotFoundException;
+    BuiltPackageDetails getLatestBuildPackage(ArchipelagoPackage pkg) throws PackageNotFoundException;
+
+    void createBuild(ArchipelagoBuiltPackage pkg, String config) throws PackageNotFoundException, PackageExistsException;
+    void createPackage(CreatePackageModel model) throws PackageExistsException;
 }

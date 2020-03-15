@@ -3,7 +3,6 @@ package build.archipelago.common;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -24,13 +23,13 @@ public class ArchipelagoBuiltPackageTest {
         ArchipelagoBuiltPackage pkg = ArchipelagoBuiltPackage.parse(testString);
         assertEquals(name, pkg.getName());
         assertEquals(version, pkg.getVersion());
-        assertTrue(hash.equals(pkg.getHash()));
+        assertEquals(hash, pkg.getHash());
     }
 
     @Test
     public void testConstructorWithNameAndVersionAndHash() {
         ArchipelagoPackage pkg = new ArchipelagoBuiltPackage(name, version, hash);
-        assertEquals(name + "-" + version + ":" + hash, pkg.getConcatenated());
+        assertEquals(name + "-" + version + ":" + hash, pkg.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -12,6 +12,6 @@ public class CreatePackageDelegateRequest {
 
     protected void validate() {
         Preconditions.checkNotNull(name, "Name required");
-        Preconditions.checkNotNull(description, "Hash required");
+        Preconditions.checkNotNull(description, "Description required");
     }
 }
