@@ -103,7 +103,7 @@ public class DynamoDBPackageData implements PackageData {
 
         QueryRequest queryRequest = new QueryRequest()
                 .withTableName(settings.getPackagesVersionsTableName())
-                .withProjectionExpression("#version, #latestHash, #latestBuildTime")
+                .withProjectionExpression("#version, #latestBuild, #latestBuildTime")
                 .withKeyConditionExpression("#packageName = :packageName")
                 .withExpressionAttributeNames(ImmutableMap.of(
                         "#version", DynamoDBKeys.DISPLAY_VERSION,
@@ -137,9 +137,9 @@ public class DynamoDBPackageData implements PackageData {
 
     @Override
     public ImmutableList<VersionBuildDetails> getPackageVersionBuilds(ArchipelagoPackage pkg) {
-        log.debug("Find all builds for the package \"{}\"", pkg.getNameVersion());
+        log.info("Find all builds for the package \"{}\"", pkg.getNameVersion());
         QueryRequest queryRequest = new QueryRequest()
-                .withTableName(settings.getPackagesVersionsTableName())
+                .withTableName(settings.getPackagesBuildsTableName())
                 .withProjectionExpression("#hash, #created")
                 .withKeyConditionExpression("#packageNameVersion = :packageNameVersion")
                 .withExpressionAttributeNames(ImmutableMap.of(
@@ -149,6 +149,7 @@ public class DynamoDBPackageData implements PackageData {
                 ))
                 .withExpressionAttributeValues(ImmutableMap.of(":packageNameVersion",
                         new AttributeValue().withS(searchNameVersion(pkg))));
+        log.debug("Builds query: {}", queryRequest);
         QueryResult result = dynamoDB.query(queryRequest);
         ImmutableList.Builder<VersionBuildDetails> builds = ImmutableList.builder();
         if (result.getItems() != null) {
@@ -182,6 +183,7 @@ public class DynamoDBPackageData implements PackageData {
         return BuiltPackageDetails.builder()
                 .hash(item.get(DynamoDBKeys.HASH).getS())
                 .config(item.get(DynamoDBKeys.CONFIG).getS())
+                .created(AV.toInstant(item.get(DynamoDBKeys.CREATED)))
                 .build();
     }
 

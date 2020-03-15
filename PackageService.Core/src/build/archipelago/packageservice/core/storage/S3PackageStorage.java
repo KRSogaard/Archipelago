@@ -1,6 +1,6 @@
 package build.archipelago.packageservice.core.storage;
 
-import build.archipelago.common.ArchipelagoPackage;
+import build.archipelago.common.ArchipelagoBuiltPackage;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -24,8 +24,8 @@ public class S3PackageStorage implements PackageStorage {
     }
 
     @Override
-    public void upload(ArchipelagoPackage nameVersion, String hash, byte[] artifactBytes) {
-        String keyName = getS3FileName(nameVersion, hash);
+    public void upload(ArchipelagoBuiltPackage pkg, byte[] artifactBytes) {
+        String keyName = getS3FileName(pkg);
         log.info("Saving build artifact to \"{}\"", keyName);
 
         ObjectMetadata om = new ObjectMetadata();
@@ -36,8 +36,8 @@ public class S3PackageStorage implements PackageStorage {
     }
 
     @Override
-    public byte[] get(ArchipelagoPackage nameVersion, String hash) throws IOException {
-        String keyName = getS3FileName(nameVersion, hash);
+    public byte[] get(ArchipelagoBuiltPackage pkg) throws IOException {
+        String keyName = getS3FileName(pkg);
         log.debug("Fetching build artifact from S3 \"{}\" with key \"{}\"", bucketName, keyName);
         S3Object result = s3Client.getObject(bucketName, keyName);
         try {
@@ -48,7 +48,7 @@ public class S3PackageStorage implements PackageStorage {
         }
     }
 
-    private String getS3FileName(ArchipelagoPackage nameVersion, String hash) {
-        return nameVersion.getName() + "-" + hash + ".zip";
+    private String getS3FileName(ArchipelagoBuiltPackage pkg) {
+        return pkg.toString() + ".zip";
     }
 }

@@ -13,12 +13,12 @@ s3:
     name: "alpha-archipelago-packages"
 
 dynamodb:
-  packages_latest:
-    name: "packages.latest.alpha"
-  packages_builds:
-    name: "packages.builds.alpha"
   packages:
     name: "packages.alpha"
+  packages_versions:
+    name: "packages-versions.alpha"
+  packages_builds:
+    name: "packages-builds.alpha"
 
 aws:
   region: "us-west-2"

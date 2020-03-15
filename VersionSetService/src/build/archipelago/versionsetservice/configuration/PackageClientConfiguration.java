@@ -4,7 +4,9 @@ import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.packageservice.client.PackageServiceClient;
 import build.archipelago.packageservice.client.models.CreatePackageRequest;
+import build.archipelago.packageservice.client.models.GetPackageBuildResponse;
 import build.archipelago.packageservice.client.models.GetPackageResponse;
+import build.archipelago.packageservice.client.models.PackageBuildsResponse;
 import build.archipelago.packageservice.client.models.PackageVerificationResult;
 import build.archipelago.packageservice.client.models.UploadPackageRequest;
 import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
@@ -29,7 +31,17 @@ public class PackageClientConfiguration {
             }
 
             @Override
-            public GetPackageResponse getPackage(ArchipelagoPackage pkg) throws PackageNotFoundException {
+            public GetPackageResponse getPackage(String name) throws PackageNotFoundException {
+                return null;
+            }
+
+            @Override
+            public PackageBuildsResponse getPackageBuilds(ArchipelagoPackage pks) throws PackageNotFoundException {
+                return null;
+            }
+
+            @Override
+            public GetPackageBuildResponse getPackageBuild(ArchipelagoBuiltPackage pkg) throws PackageNotFoundException {
                 return null;
             }
 

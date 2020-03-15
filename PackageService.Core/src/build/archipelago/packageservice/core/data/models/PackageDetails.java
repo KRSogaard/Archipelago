@@ -12,5 +12,4 @@ public class PackageDetails {
     private String description;
     private Instant created;
     private ImmutableList<PackageDetailsVersion> versions;
-
 }
