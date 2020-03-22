@@ -8,10 +8,10 @@ import build.archipelago.packageservice.client.models.GetPackageResponse;
 import build.archipelago.packageservice.client.models.PackageBuildsResponse;
 import build.archipelago.packageservice.client.models.PackageVerificationResult;
 import build.archipelago.packageservice.client.models.UploadPackageRequest;
-import build.archipelago.packageservice.common.exceptions.PackageArtifactExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -25,7 +25,6 @@ public interface PackageServiceClient {
     PackageVerificationResult<ArchipelagoPackage> verifyPackagesExists(List<ArchipelagoPackage> packages);
     PackageVerificationResult<ArchipelagoBuiltPackage> verifyBuildsExists(List<ArchipelagoBuiltPackage> packages);
 
-    void uploadBuiltArtifact(UploadPackageRequest request, Path file)
-            throws PackageArtifactExistsException, PackageNotFoundException;
-    Path getBuildArtifact(ArchipelagoPackage pkg) throws PackageNotFoundException;
+    String uploadBuiltArtifact(UploadPackageRequest request, Path file) throws PackageNotFoundException;
+    Path getBuildArtifact(ArchipelagoBuiltPackage pkg, Path directory) throws PackageNotFoundException, IOException;
 }

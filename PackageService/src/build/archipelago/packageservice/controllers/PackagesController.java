@@ -148,8 +148,12 @@ public class PackagesController {
         for (String pkg : request.getPackages()) {
             packages.add(ArchipelagoPackage.parse(pkg));
         }
+        ImmutableList<ArchipelagoPackage> pkgs = packages.build();
+        log.info("Verifying packages for: {}", pkgs);
+
+        ImmutableList<ArchipelagoPackage> missing = verifyPackageExistsDelegate.verify(pkgs);
         return VerificationResponse.builder()
-                .verified(verifyPackageExistsDelegate.verify(packages.build()))
+                .missing(missing.stream().map(ArchipelagoPackage::getNameVersion).collect(Collectors.toList()))
                 .build();
     }
 
@@ -163,8 +167,9 @@ public class PackagesController {
         ImmutableList<ArchipelagoBuiltPackage> pkgs = packages.build();
         log.info("Verifying builds for: {}", pkgs);
 
+        ImmutableList<ArchipelagoBuiltPackage> missing = verifyBuildsExistsDelegate.verify(pkgs);
         return VerificationResponse.builder()
-                .verified(verifyBuildsExistsDelegate.verify(pkgs))
+                .missing(missing.stream().map(ArchipelagoBuiltPackage::toString).collect(Collectors.toList()))
                 .build();
     }
 }

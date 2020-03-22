@@ -11,8 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadPackageRequest {
-    private String name;
-    private String version;
     private MultipartFile buildArtifact;
     private String config;
 }

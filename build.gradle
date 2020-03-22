@@ -134,9 +134,14 @@ project(':PackageService.Core') {
 }
 
 project(':PackageService.Client') {
+    apply plugin: 'io.spring.dependency-management'
+
     dependencies {
         implementation project(':Archipelago.Common')
         implementation project(':PackageService.Common')
+
+        implementation 'org.springframework.boot:spring-boot-starter-webflux:2.2.5.RELEASE'
+        implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
     }
 }
 project(':PackageService.Common') {

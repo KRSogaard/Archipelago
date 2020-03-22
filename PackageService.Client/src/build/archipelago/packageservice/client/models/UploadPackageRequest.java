@@ -1,13 +1,12 @@
 package build.archipelago.packageservice.client.models;
 
+import build.archipelago.common.ArchipelagoPackage;
 import lombok.Builder;
 import lombok.Value;
 
 @Builder
 @Value
 public class UploadPackageRequest {
-    private String name;
-    private String version;
-    private String hash;
+    private ArchipelagoPackage pkg;
     private String config;
 }

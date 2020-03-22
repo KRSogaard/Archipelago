@@ -1,15 +1,13 @@
 package build.archipelago.packageservice.client.models;
 
-import build.archipelago.common.ArchipelagoPackage;
+import com.google.common.collect.ImmutableList;
 import lombok.Builder;
 import lombok.Value;
-
-import java.util.List;
 
 @Builder
 @Value
 public class PackageVerificationResult<T> {
-    private List<T> missingPackages;
+    private ImmutableList<T> missingPackages;
 
     public boolean isValid() {
         return missingPackages == null || missingPackages.size() == 0;

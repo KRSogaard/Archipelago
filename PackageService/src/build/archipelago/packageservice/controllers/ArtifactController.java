@@ -10,6 +10,7 @@ import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.Uploa
 import build.archipelago.packageservice.models.ArtifactUploadResponse;
 import build.archipelago.packageservice.models.UploadPackageRequest;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -43,19 +44,24 @@ public class ArtifactController {
         this.getBuildArtifactDelegate = getBuildArtifactDelegate;
     }
 
-    @PostMapping
+    @PostMapping("{name}/{version}")
     @ResponseStatus(HttpStatus.OK)
-    public ArtifactUploadResponse uploadBuiltArtifact(@ModelAttribute UploadPackageRequest request)
+    public ArtifactUploadResponse uploadBuiltArtifact(
+            @PathVariable("name") String name,
+            @PathVariable("version") String version,
+            @ModelAttribute UploadPackageRequest request)
             throws PackageNotFoundException, PackageExistsException {
         log.info("Request to upload new build: {}", request);
         Preconditions.checkNotNull(request.getBuildArtifact(),
                 "build artifact is required");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(name), "A name is required");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version), "A version is required");
         Preconditions.checkArgument(request.getBuildArtifact().getSize() > 0,
                 "build artifact is required");
         try {
             String hash = uploadBuildArtifactDelegate.uploadArtifact(
                     UploadBuildArtifactDelegateRequest.builder()
-                            .pkg(new ArchipelagoPackage(request.getName(), request.getVersion()))
+                            .pkg(new ArchipelagoPackage(name, version))
                             .config(request.getConfig())
                             .buildArtifact(request.getBuildArtifact().getBytes())
                             .build()
@@ -75,6 +81,7 @@ public class ArtifactController {
             @PathVariable("name") String name,
             @PathVariable("version") String version,
             @PathVariable("hash") Optional<String> hash) throws PackageNotFoundException {
+        log.info("Request to get build artifact for Package {}, Version: {}, Hash: {}", name, version, hash);
         ArchipelagoPackage pkg = new ArchipelagoPackage(name, version);
 
         GetBuildArtifactResponse response = null;

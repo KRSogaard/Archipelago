@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 public class ArchipelagoPackage {
 
     private final static Pattern VERSION_PATTERN = Pattern.compile("^[^:]+$");
-    private final static Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z0-9]+$");
+    private final static Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z0-9-_]+$");
 
     private String name;
     private String version;
 
-    public static ArchipelagoPackage parse(String value) throws NullPointerException {
+    public static ArchipelagoPackage parse(String value) {
         int i = value.lastIndexOf('-');
         if (i == -1) {
             throw new IllegalArgumentException("\"" + value + "\" is not a valid name version");

@@ -25,3 +25,6 @@ aws:
   access:
     id: "AKIARDAF5R4OERLSQXOW"
     key: "uGN1m4pb+cjoXdVLzn9mVL5VLLdlNeXvuyZVVGHY"
+
+endpoints:
+  package-service: "http://localhost:8080"

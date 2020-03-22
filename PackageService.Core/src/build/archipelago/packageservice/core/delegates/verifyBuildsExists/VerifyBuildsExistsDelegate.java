@@ -4,6 +4,7 @@ import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.data.PackageData;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -17,18 +18,19 @@ public class VerifyBuildsExistsDelegate {
         this.packageData = packageData;
     }
 
-    public boolean verify(List<ArchipelagoBuiltPackage> packages) {
+    public ImmutableList<ArchipelagoBuiltPackage> verify(List<ArchipelagoBuiltPackage> packages) {
         Preconditions.checkNotNull(packages);
 
+        var missingPackages = ImmutableList.<ArchipelagoBuiltPackage>builder();
         for (ArchipelagoBuiltPackage pkg : packages) {
             try {
                 log.debug("Checking if {} exists", pkg);
                 packageData.getBuildPackage(pkg);
             } catch (PackageNotFoundException e) {
                 log.debug("Got not found exception, {}", e.getMessage(), e);
-                return false;
+                missingPackages.add(pkg);
             }
         }
-        return false;
+        return missingPackages.build();
     }
 }

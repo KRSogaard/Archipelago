@@ -3,8 +3,10 @@ package build.archipelago.packageservice.models;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Builder
 @Value
 public class VerificationResponse {
-    private boolean verified;
+    private List<String> missing;
 }

@@ -17,5 +17,23 @@ public class GetPackageResponse {
         private String version;
         private String latestBuildHash;
         private Instant latestBuildTime;
+
+        public Version(String version, String latestBuildHash, Instant latestBuildTime) {
+            this.version = version;
+            this.latestBuildHash = latestBuildHash;
+            this.latestBuildTime = latestBuildTime;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public String getLatestBuildHash() {
+            return latestBuildHash;
+        }
+
+        public Instant getLatestBuildTime() {
+            return latestBuildTime;
+        }
     }
 }
