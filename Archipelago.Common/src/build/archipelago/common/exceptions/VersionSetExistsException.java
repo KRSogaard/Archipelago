@@ -1,4 +1,4 @@
-package build.archipelago.versionsetservice.core.exceptions;
+package build.archipelago.common.exceptions;
 
 public class VersionSetExistsException extends Throwable {
     public VersionSetExistsException(String name) {

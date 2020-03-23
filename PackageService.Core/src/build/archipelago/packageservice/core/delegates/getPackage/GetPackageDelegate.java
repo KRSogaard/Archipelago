@@ -1,7 +1,7 @@
 package build.archipelago.packageservice.core.delegates.getPackage;
 
 import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.data.models.PackageDetails;
 import com.google.common.base.Preconditions;

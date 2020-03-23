@@ -1,6 +1,6 @@
 package build.archipelago.packageservice.core.delegates.createPackage;
 
-import build.archipelago.packageservice.common.exceptions.PackageExistsException;
+import build.archipelago.common.exceptions.PackageExistsException;
 import build.archipelago.packageservice.core.data.PackageData;
 import build.archipelago.packageservice.core.data.models.CreatePackageModel;
 

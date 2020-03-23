@@ -1,8 +1,8 @@
 package build.archipelago.packageservice.controllers;
 
 import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.packageservice.common.exceptions.PackageExistsException;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageExistsException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactDelegate;
 import build.archipelago.packageservice.core.delegates.getBuildArtifact.GetBuildArtifactResponse;
 import build.archipelago.packageservice.core.delegates.uploadBuildArtifact.UploadBuildArtifactDelegate;

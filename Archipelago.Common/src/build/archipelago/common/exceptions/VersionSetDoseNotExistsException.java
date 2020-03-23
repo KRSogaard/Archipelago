@@ -1,8 +1,4 @@
-package build.archipelago.versionsetservice.core.exceptions;
-
-import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
-
-import java.util.Optional;
+package build.archipelago.common.exceptions;
 
 public class VersionSetDoseNotExistsException extends Throwable {
     public VersionSetDoseNotExistsException(String name) {

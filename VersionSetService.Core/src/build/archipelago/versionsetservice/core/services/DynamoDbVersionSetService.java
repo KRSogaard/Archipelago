@@ -3,7 +3,7 @@ package build.archipelago.versionsetservice.core.services;
 import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
 import build.archipelago.common.dynamodb.AV;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
+import build.archipelago.common.exceptions.VersionSetDoseNotExistsException;
 import build.archipelago.versionsetservice.core.models.Revision;
 import build.archipelago.versionsetservice.core.models.VersionSet;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;

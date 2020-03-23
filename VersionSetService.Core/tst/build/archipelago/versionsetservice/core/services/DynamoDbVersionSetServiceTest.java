@@ -2,7 +2,7 @@ package build.archipelago.versionsetservice.core.services;
 
 import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
+import build.archipelago.common.exceptions.VersionSetDoseNotExistsException;
 import build.archipelago.versionsetservice.core.utils.RevisionUtil;
 import build.archipelago.versionsetservice.core.utils.TestConstants;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;

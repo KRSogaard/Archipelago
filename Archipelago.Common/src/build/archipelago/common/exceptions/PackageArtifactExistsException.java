@@ -1,4 +1,4 @@
-package build.archipelago.packageservice.common.exceptions;
+package build.archipelago.common.exceptions;
 
 public class PackageArtifactExistsException extends Exception {
     public PackageArtifactExistsException(String message) {

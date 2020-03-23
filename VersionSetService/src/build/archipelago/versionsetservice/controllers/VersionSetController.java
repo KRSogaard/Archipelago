@@ -2,14 +2,14 @@ package build.archipelago.versionsetservice.controllers;
 
 import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 import build.archipelago.versionsetservice.core.delegates.CreateVersionSetDelegate;
 import build.archipelago.versionsetservice.core.delegates.CreateVersionSetRevisionDelegate;
 import build.archipelago.versionsetservice.core.delegates.GetVersionSetDelegate;
 import build.archipelago.versionsetservice.core.delegates.GetVersionSetPackagesDelegate;
-import build.archipelago.versionsetservice.core.exceptions.MissingTargetPackageException;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetExistsException;
+import build.archipelago.common.exceptions.MissingTargetPackageException;
+import build.archipelago.common.exceptions.VersionSetDoseNotExistsException;
+import build.archipelago.common.exceptions.VersionSetExistsException;
 import build.archipelago.versionsetservice.core.models.VersionSet;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;
 import build.archipelago.versionsetservice.models.CreateVersionSetRequest;
@@ -78,14 +78,14 @@ public class VersionSetController {
             @RequestBody CreateVersionSetRevisionRequest request) throws VersionSetDoseNotExistsException,
             MissingTargetPackageException, PackageNotFoundException {
         log.info("Request to created revision for version set \"{}\": {}", versionSetName, request);
-        request.setVersionSetName(versionSetName);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(versionSetName));
         request.validate();
 
         List<ArchipelagoBuiltPackage> packages = request.getPackages().stream()
                 .map(ArchipelagoBuiltPackage::parse).collect(Collectors.toList());
 
         String revisionId = createVersionSetRevisionDelegate.createRevision(
-                request.getVersionSetName(), packages);
+                versionSetName, packages);
 
         log.debug("New revision \"{}\" was created for version set \"{}\"", revisionId, versionSetName);
         return CreateVersionSetRevisionResponse.builder()

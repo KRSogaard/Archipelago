@@ -73,7 +73,6 @@ project(':PackageService') {
 
     dependencies {
         implementation project(':PackageService.Core')
-        implementation project(':PackageService.Common')
         implementation project(':Archipelago.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
@@ -103,7 +102,6 @@ project(':PackageService') {
 }
 project(':PackageService.Core') {
     dependencies {
-        implementation project(':PackageService.Common')
         implementation project(':Archipelago.Common')
         implementation project(':Archipelago.Common.DynamoDB')
 
@@ -132,21 +130,14 @@ project(':PackageService.Core') {
         systemProperty "java.library.path", 'build/native-libs'
     }
 }
-
 project(':PackageService.Client') {
     apply plugin: 'io.spring.dependency-management'
 
     dependencies {
         implementation project(':Archipelago.Common')
-        implementation project(':PackageService.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-webflux:2.2.5.RELEASE'
         implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-    }
-}
-project(':PackageService.Common') {
-    dependencies {
-        implementation project(':Archipelago.Common')
     }
 }
 
@@ -164,9 +155,8 @@ project(':VersionSetService') {
     }
 
     dependencies {
-        implementation project(':VersionSetService.Core')
         implementation project(':Archipelago.Common')
-        implementation project(':PackageService.Common')
+        implementation project(':VersionSetService.Core')
         implementation project(':PackageService.Client')
 
         implementation 'org.springframework.boot:spring-boot-starter-jersey'
@@ -214,12 +204,12 @@ project(':VersionSetService') {
     }
     runlocal.finalizedBy run
 }
+
 project(':VersionSetService.Core') {
     dependencies {
         implementation project(':Archipelago.Common')
         implementation project(':Archipelago.Common.DynamoDB')
         implementation project(':PackageService.Client')
-        implementation project(':PackageService.Common')
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
 
         // Needed for DynamoDBLocal
@@ -245,6 +235,17 @@ project(':VersionSetService.Core') {
     }
 }
 
+project(':VersionSetService.Client') {
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        implementation project(':Archipelago.Common')
+
+        implementation 'org.springframework.boot:spring-boot-starter-webflux:2.2.5.RELEASE'
+        implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    }
+}
+
 project(':Maui') {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -267,10 +268,6 @@ project(':Maui.Core') {
         implementation project(':Archipelago.Common')
         implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
-    }
-}
-project(':Archipelago.Common') {
-    dependencies {
     }
 }
 project(':Archipelago.Common.DynamoDB') {

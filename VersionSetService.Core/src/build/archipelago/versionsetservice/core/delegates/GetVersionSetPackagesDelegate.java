@@ -1,5 +1,5 @@
 package build.archipelago.versionsetservice.core.delegates;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
+import build.archipelago.common.exceptions.VersionSetDoseNotExistsException;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;
 import build.archipelago.versionsetservice.core.services.VersionSetService;
 import build.archipelago.versionsetservice.core.utils.NameUtil;

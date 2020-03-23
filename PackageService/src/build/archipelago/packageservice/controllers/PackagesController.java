@@ -2,8 +2,8 @@ package build.archipelago.packageservice.controllers;
 
 import build.archipelago.common.ArchipelagoBuiltPackage;
 import build.archipelago.common.ArchipelagoPackage;
-import build.archipelago.packageservice.common.exceptions.PackageExistsException;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageExistsException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 import build.archipelago.packageservice.core.data.models.BuiltPackageDetails;
 import build.archipelago.packageservice.core.data.models.PackageDetails;
 import build.archipelago.packageservice.core.data.models.VersionBuildDetails;

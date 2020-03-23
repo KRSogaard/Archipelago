@@ -16,8 +16,8 @@ import build.archipelago.packageservice.client.rest.models.RestGetPackageRespons
 import build.archipelago.packageservice.client.rest.models.RestPackageBuildsResponse;
 import build.archipelago.packageservice.client.rest.models.RestVerificationRequest;
 import build.archipelago.packageservice.client.rest.models.RestVerificationResponse;
-import build.archipelago.packageservice.common.exceptions.PackageExistsException;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageExistsException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;

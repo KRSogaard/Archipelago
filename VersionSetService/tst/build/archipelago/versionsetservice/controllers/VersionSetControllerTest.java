@@ -6,8 +6,8 @@ import build.archipelago.versionsetservice.core.delegates.CreateVersionSetDelega
 import build.archipelago.versionsetservice.core.delegates.CreateVersionSetRevisionDelegate;
 import build.archipelago.versionsetservice.core.delegates.GetVersionSetDelegate;
 import build.archipelago.versionsetservice.core.delegates.GetVersionSetPackagesDelegate;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetDoseNotExistsException;
-import build.archipelago.versionsetservice.core.exceptions.VersionSetExistsException;
+import build.archipelago.common.exceptions.VersionSetDoseNotExistsException;
+import build.archipelago.common.exceptions.VersionSetExistsException;
 import build.archipelago.versionsetservice.core.models.Revision;
 import build.archipelago.versionsetservice.core.models.VersionSet;
 import build.archipelago.versionsetservice.core.models.VersionSetRevision;
@@ -141,14 +141,12 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, targets.get(0).toString())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -176,14 +174,12 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, targets.get(0).toString())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
@@ -196,15 +192,13 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s",
-                            "%s"
-                        ]
-                    }
-                    """, vsName, targets.get(0).toString(), targets.get(1).toString())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\",\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, targets.get(0).toString(), targets.get(1).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -228,12 +222,10 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": []
-                    }
-                    """, vsName)))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": []\n" +
+                        "                    }", vsName)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -245,14 +237,12 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, TestConstants.pkgA.getName())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, TestConstants.pkgA.getName())))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -264,14 +254,12 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, TestConstants.pkgA.getName() + "-")))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, TestConstants.pkgA.getName() + "-")))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -283,14 +271,12 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, TestConstants.pkgA.toString() + ":" + RevisionUtil.getRandomRevisionId())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, TestConstants.pkgA.toString() + ":" + RevisionUtil.getRandomRevisionId())))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -304,15 +290,13 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "name": "%s",
-                        "parent": "%s",
-                        "targets": [
-                            "%s"
-                        ]
-                    }
-                    """, vsName, vsParentName, targets.get(0).toString())))
+                .content(String.format("{\n" +
+                        "                        \"name\": \"%s\",\n" +
+                        "                        \"parent\": \"%s\",\n" +
+                        "                        \"targets\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", vsName, vsParentName, targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -339,13 +323,11 @@ public class VersionSetControllerTest {
         var result = mockMvc.perform(post("/version-sets/" + vsName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "packages": [
-                            "%s", "%s", "%s"
-                        ]
-                    }
-                    """, targets.get(0).toString(), targets.get(1).toString(),
+                .content(String.format("{\n" +
+                                "                        \"packages\": [\n" +
+                                "                            \"%s\", \"%s\", \"%s\"\n" +
+                                "                        ]\n" +
+                                "                    }", targets.get(0).toString(), targets.get(1).toString(),
                         targets.get(2).toString())))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -381,13 +363,11 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/" + vsName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "packages": [
-                            "%s"
-                        ]
-                    }
-                    """, targets.get(0).toString())))
+                .content(String.format("{\n" +
+                        "                        \"packages\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", targets.get(0).toString())))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -399,13 +379,11 @@ public class VersionSetControllerTest {
         mockMvc.perform(post("/version-sets/" + vsName)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
-                .content(String.format("""
-                    {
-                        "packages": [
-                            "%s"
-                        ]
-                    }
-                    """, TestConstants.pkgA.toString())))
+                .content(String.format("{\n" +
+                        "                        \"packages\": [\n" +
+                        "                            \"%s\"\n" +
+                        "                        ]\n" +
+                        "                    }", TestConstants.pkgA.toString())))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

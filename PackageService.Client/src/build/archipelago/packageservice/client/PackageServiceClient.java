@@ -8,8 +8,8 @@ import build.archipelago.packageservice.client.models.GetPackageResponse;
 import build.archipelago.packageservice.client.models.PackageBuildsResponse;
 import build.archipelago.packageservice.client.models.PackageVerificationResult;
 import build.archipelago.packageservice.client.models.UploadPackageRequest;
-import build.archipelago.packageservice.common.exceptions.PackageExistsException;
-import build.archipelago.packageservice.common.exceptions.PackageNotFoundException;
+import build.archipelago.common.exceptions.PackageExistsException;
+import build.archipelago.common.exceptions.PackageNotFoundException;
 
 import java.io.IOException;
 import java.nio.file.Path;
