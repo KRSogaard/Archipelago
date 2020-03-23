@@ -1,0 +1,12 @@
+[submodule "Archipelago.Common"]
+	path = Archipelago.Common
+	url = https://github.com/KRSogaard/Archipelago.Common.git
+[submodule "Archipelago.Maui"]
+	path = Archipelago.Maui
+	url = https://github.com/KRSogaard/Archipelago.Maui.git
+[submodule "Archipelago.PackageService"]
+	path = Archipelago.PackageService
+	url = https://github.com/KRSogaard/Archipelago.PackageService.git
+[submodule "Archipelago.VersionSetService"]
+	path = Archipelago.VersionSetService
+	url = https://github.com/KRSogaard/Archipelago.VersionSetService.git
