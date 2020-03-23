@@ -21,6 +21,13 @@ allprojects {
             //Local DynamoDB repository
             url "https://s3-us-west-2.amazonaws.com/dynamodb-local/release"
         }
+        maven {
+            url "s3://repo.wewelo.com/release"
+            credentials(AwsCredentials) {
+                accessKey weweloRepoUser
+                secretKey weweloRepoPassword
+            }
+        }
     }
 }
 
@@ -45,9 +52,9 @@ subprojects {
         testImplementation 'commons-io:commons-io:2.6'
 
         // Lombok
-        implementation 'org.projectlombok:lombok:1.+'  // utilities for POJOs
-        annotationProcessor 'org.projectlombok:lombok:1.+'
-        testAnnotationProcessor 'org.projectlombok:lombok:1.+'
+        implementation 'org.projectlombok:lombok:1.18.12'  // utilities for POJOs
+        annotationProcessor 'org.projectlombok:lombok:1.18.12'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
     }
 
     sourceSets {
@@ -132,12 +139,33 @@ project(':PackageService.Core') {
 }
 project(':PackageService.Client') {
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
 
     dependencies {
         implementation project(':Archipelago.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-webflux:2.2.5.RELEASE'
         implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = 'build.archipelago'
+                artifactId = 'package-service-client'
+                version = '1.0'
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url "s3://repo.wewelo.com/release"
+                credentials(AwsCredentials) {
+                    accessKey weweloRepoUser
+                    secretKey weweloRepoPassword
+                }
+            }
+        }
     }
 }
 
@@ -237,12 +265,33 @@ project(':VersionSetService.Core') {
 
 project(':VersionSetService.Client') {
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
 
     dependencies {
         implementation project(':Archipelago.Common')
 
         implementation 'org.springframework.boot:spring-boot-starter-webflux:2.2.5.RELEASE'
         implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = 'build.archipelago'
+                artifactId = 'version-set-service-client'
+                version = '1.0'
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url "s3://repo.wewelo.com/release"
+                credentials(AwsCredentials) {
+                    accessKey weweloRepoUser
+                    secretKey weweloRepoPassword
+                }
+            }
+        }
     }
 }
 
@@ -270,9 +319,55 @@ project(':Maui.Core') {
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
     }
 }
+
+project(':Archipelago.Common') {
+    apply plugin: 'maven-publish'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = 'build.archipelago'
+                artifactId = 'common'
+                version = '1.0'
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url "s3://repo.wewelo.com/release"
+                credentials(AwsCredentials) {
+                    accessKey weweloRepoUser
+                    secretKey weweloRepoPassword
+                }
+            }
+        }
+    }
+}
 project(':Archipelago.Common.DynamoDB') {
+    apply plugin: 'maven-publish'
+
     dependencies {
         implementation project(':Archipelago.Common')
         implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.692'
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = 'build.archipelago'
+                artifactId = 'common-dynamodb'
+                version = '1.0'
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url "s3://repo.wewelo.com/release"
+                credentials(AwsCredentials) {
+                    accessKey weweloRepoUser
+                    secretKey weweloRepoPassword
+                }
+            }
+        }
     }
 }
